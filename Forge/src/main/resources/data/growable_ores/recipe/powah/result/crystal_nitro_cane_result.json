@@ -1,0 +1,11 @@
+{
+  "type": "growable_ores:cane_converter",
+
+  "ingredient": {
+      "item": "growable_ores:crystal_nitro_cane"
+  },
+  "result":  {
+    "id": "powah:crystal_nitro",
+    "count": 1
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "growable_ores:cane_converter",
+  "pattern": [
+    "###",
+    "#G#",
+    "###"
+  ],
+  "ingredient": {
+      "item": "minecraft:sugar_cane"
+    },
+    "G": {
+      "item": "ic2:ingot_tin"
+  },
+  "result":  {
+    "id": "growable_ores:ic_tin_ore_cane",
+    "count": 1
+  }
+}

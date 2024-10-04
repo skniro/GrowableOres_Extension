@@ -1,0 +1,18 @@
+{
+  "type": "growable_ores:cane_converter",
+  "pattern": [
+    "###",
+    "#G#",
+    "###"
+  ],
+  "ingredient": {
+      "item": "minecraft:sugar_cane"
+    },
+    "G": {
+      "item": "minecraft:copper_ingot"
+  },
+  "result":  {
+    "id": "growable_ores:copper_cane",
+    "count": 1
+  }
+}

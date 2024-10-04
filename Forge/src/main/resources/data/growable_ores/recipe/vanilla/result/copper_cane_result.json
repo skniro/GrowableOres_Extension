@@ -1,0 +1,11 @@
+{
+  "type": "growable_ores:cane_converter",
+
+  "ingredient": {
+      "item": "growable_ores:copper_cane"
+  },
+  "result":  {
+    "id": "minecraft:copper_ingot",
+    "count": 4
+  }
+}

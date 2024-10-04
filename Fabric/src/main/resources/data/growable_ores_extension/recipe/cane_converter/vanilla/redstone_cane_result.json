@@ -1,0 +1,11 @@
+{
+  "type": "growable_ores:cane_converter",
+
+  "ingredient": {
+      "item": "growable_ores:redstone_cane"
+  },
+  "result":  {
+    "id": "minecraft:redstone",
+    "count": 4
+  }
+}

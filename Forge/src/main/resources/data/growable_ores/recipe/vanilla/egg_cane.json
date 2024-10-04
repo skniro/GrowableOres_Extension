@@ -1,0 +1,18 @@
+{
+  "type": "growable_ores:cane_converter",
+  "pattern": [
+    "###",
+    "#G#",
+    "###"
+  ],
+  "ingredient": {
+      "item": "minecraft:sugar_cane"
+    },
+    "G": {
+      "item": "minecraft:egg"
+  },
+  "result":  {
+    "id": "growable_ores:egg_cane",
+    "count": 1
+  }
+}

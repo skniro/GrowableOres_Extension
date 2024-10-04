@@ -1,0 +1,11 @@
+{
+  "type": "growable_ores:cane_converter",
+
+  "ingredient": {
+      "item": "growable_ores:c_andesite_alloy_cane"
+  },
+  "result":  {
+    "id": "create:andesite_alloy",
+    "count": 1
+  }
+}

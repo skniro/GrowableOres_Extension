@@ -1,0 +1,18 @@
+{
+  "type": "growable_ores:cane_converter",
+  "pattern": [
+    "###",
+    "#G#",
+    "###"
+  ],
+  "ingredient": {
+      "item": "minecraft:sugar_cane"
+    },
+    "G": {
+      "item": "minecraft:quartz"
+  },
+  "result":  {
+    "id": "growable_ores:nether_quartz_cane",
+    "count": 1
+  }
+}

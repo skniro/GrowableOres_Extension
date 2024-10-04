@@ -1,0 +1,18 @@
+{
+  "type": "growable_ores:cane_converter",
+  "pattern": [
+    "###",
+    "#G#",
+    "###"
+  ],
+  "ingredient": {
+      "item": "minecraft:sugar_cane"
+    },
+    "G": {
+      "item": "ad_astra:cheese"
+  },
+  "result":  {
+    "id": "growable_ores:ad_moon_ore_cheese_cane",
+    "count": 1
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "growable_ores:cane_converter",
+  "pattern": [
+    "###",
+    "#G#",
+    "###"
+  ],
+  "ingredient": {
+      "item": "minecraft:sugar_cane"
+    },
+    "G": {
+      "item": "thermal:cinnabar_ore"
+  },
+  "result":  {
+    "id": "growable_ores:tf_cinnabar_ore_cane",
+    "count": 1
+  }
+}

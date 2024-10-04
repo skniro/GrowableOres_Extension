@@ -1,0 +1,18 @@
+{
+  "type": "growable_ores:cane_converter",
+  "pattern": [
+    "###",
+    "#G#",
+    "###"
+  ],
+  "ingredient": {
+      "item": "minecraft:sugar_cane"
+    },
+    "G": {
+      "item": "powah:crystal_spirited"
+  },
+  "result":  {
+    "id": "growable_ores:crystal_spirited_cane",
+    "count": 1
+  }
+}

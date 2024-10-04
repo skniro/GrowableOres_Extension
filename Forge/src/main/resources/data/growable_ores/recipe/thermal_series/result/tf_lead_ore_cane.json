@@ -1,0 +1,11 @@
+{
+  "type": "growable_ores:cane_converter",
+
+  "ingredient": {
+      "item": "growable_ores:tf_lead_ore_cane"
+  },
+  "result":  {
+    "id": "thermal:lead_ingot",
+    "count": 1
+  }
+}

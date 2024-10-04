@@ -1,0 +1,11 @@
+{
+  "type": "growable_ores:cane_converter",
+
+  "ingredient": {
+      "item": "growable_ores:crystal_niotic_cane"
+  },
+  "result":  {
+    "id": "powah:crystal_niotic",
+    "count": 1
+  }
+}

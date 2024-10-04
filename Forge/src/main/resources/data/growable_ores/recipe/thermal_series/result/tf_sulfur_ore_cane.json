@@ -1,0 +1,11 @@
+{
+  "type": "growable_ores:cane_converter",
+
+  "ingredient": {
+      "item": "growable_ores:tf_sulfur_ore_cane"
+  },
+  "result":  {
+    "id": "thermal:sulfur",
+    "count": 1
+  }
+}

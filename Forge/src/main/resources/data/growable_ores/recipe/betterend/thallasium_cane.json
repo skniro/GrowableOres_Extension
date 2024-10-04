@@ -1,0 +1,18 @@
+{
+  "type": "growable_ores:cane_converter",
+  "pattern": [
+    "###",
+    "#G#",
+    "###"
+  ],
+  "ingredient": {
+      "item": "minecraft:sugar_cane"
+    },
+    "G": {
+      "item": "betterend:thallasium_ingot"
+  },
+  "result":  {
+    "id": "growable_ores:thallasium_cane",
+    "count": 1
+  }
+}

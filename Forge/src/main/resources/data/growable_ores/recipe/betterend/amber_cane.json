@@ -1,0 +1,18 @@
+{
+  "type": "growable_ores:cane_converter",
+  "pattern": [
+    "###",
+    "#G#",
+    "###"
+  ],
+  "ingredient": {
+      "item": "minecraft:sugar_cane"
+    },
+    "G": {
+      "item": "betterend:amber_gem"
+  },
+  "result":  {
+    "id": "growable_ores:amber_cane",
+    "count": 1
+  }
+}

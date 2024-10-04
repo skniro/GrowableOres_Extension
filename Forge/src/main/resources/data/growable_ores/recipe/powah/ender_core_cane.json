@@ -1,0 +1,18 @@
+{
+  "type": "growable_ores:cane_converter",
+  "pattern": [
+    "###",
+    "#G#",
+    "###"
+  ],
+  "ingredient": {
+      "item": "minecraft:sugar_cane"
+    },
+    "G": {
+      "item": "powah:ender_core"
+  },
+  "result":  {
+    "id": "growable_ores:ender_core_cane",
+    "count": 1
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "growable_ores:cane_converter",
+
+  "ingredient": {
+      "item": "growable_ores:thallasium_cane"
+  },
+  "result":  {
+    "id": "betterend:thallasium_ingot",
+    "count": 1
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "growable_ores:cane_converter",
+  "pattern": [
+    "###",
+    "#G#",
+    "###"
+  ],
+  "ingredient": {
+      "item": "minecraft:sugar_cane"
+    },
+    "G": {
+      "item": "minecraft:glowstone_dust"
+  },
+  "result":  {
+    "id": "growable_ores:glowstone_cane",
+    "count": 1
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "growable_ores:cane_converter",
+
+  "ingredient": {
+      "item": "growable_ores:ender_core_cane"
+  },
+  "result":  {
+    "id": "powah:ender_core",
+    "count": 1
+  }
+}

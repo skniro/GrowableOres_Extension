@@ -1,0 +1,11 @@
+{
+  "type": "growable_ores:cane_converter",
+
+  "ingredient": {
+      "item": "growable_ores:ad_venus_calorite_ore_cane"
+  },
+  "result":  {
+    "id": "ad_astra:calorite_ingot",
+    "count": 1
+  }
+}

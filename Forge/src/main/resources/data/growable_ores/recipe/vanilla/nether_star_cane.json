@@ -1,0 +1,18 @@
+{
+  "type": "growable_ores:cane_converter",
+  "pattern": [
+    "###",
+    "#G#",
+    "###"
+  ],
+  "ingredient": {
+      "item": "minecraft:sugar_cane"
+    },
+    "G": {
+      "item": "minecraft:nether_star"
+  },
+  "result":  {
+    "id": "growable_ores:nether_star_cane",
+    "count": 1
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "growable_ores:cane_converter",
+
+  "ingredient": {
+      "item": "growable_ores:crystal_spirited_cane"
+  },
+  "result":  {
+    "id": "powah:crystal_spirited",
+    "count": 1
+  }
+}
