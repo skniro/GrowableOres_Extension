@@ -29,7 +29,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
-
+    private float rotation = 0;
     private static final int FLUID_ITEM_SLOT = 0;
     private static final int INPUT_SLOT = 1;
     private static final int OUTPUT_SLOT = 2;
@@ -65,6 +65,15 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
                 return 2;
             }
         };
+    }
+
+    public ItemStack getRenderStack() {
+            return this.getStack(INPUT_SLOT);
+    }
+    @Override
+    public void markDirty() {
+        world.updateListeners(pos, getCachedState(), getCachedState(), 3);
+        super.markDirty();
     }
 
     @Override
@@ -171,9 +180,15 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
         return maxCount >= currentCount + count;
 }
 
-@Nullable
-@Override
-public Packet<ClientPlayPacketListener> toUpdatePacket() {
+   @Nullable
+   @Override
+    public Packet<ClientPlayPacketListener> toUpdatePacket() {
     return BlockEntityUpdateS2CPacket.create(this);
 }
+
+
+    @Override
+    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
+        return createNbt(registryLookup);
+    }
 }

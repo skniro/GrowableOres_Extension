@@ -1,5 +1,6 @@
 package com.skniro.growable_ores_extension.datagen;
 
+import com.skniro.growable_ores_extension.block.GrowableOresBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
@@ -12,7 +13,6 @@ public class GrowableModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-        //Village
 
 
     }

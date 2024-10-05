@@ -1,20 +1,28 @@
 package com.skniro.growable_ores_extension.screen;
 
 import com.skniro.growable_ores_extension.GrowableOresExtension;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerType;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraftforge.common.extensions.IForgeMenuType;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.network.IContainerFactory;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
 
-public class AlchemyScreenHandlerType <T extends ScreenHandler>{
-    public static final ScreenHandlerType<AlchemyBlockScreenHandler> ALCHEMY =
-            Registry.register(Registries.SCREEN_HANDLER, Identifier.of(GrowableOresExtension.MOD_ID, "cane_converter_screen_handler"),
-                    new ExtendedScreenHandlerType<>(AlchemyBlockScreenHandler::new, BlockPos.PACKET_CODEC));
+public class AlchemyScreenHandlerType <T extends AbstractContainerMenu>{
+    public static final DeferredRegister<MenuType<?>> MENUS =
+            DeferredRegister.create(ForgeRegistries.MENU_TYPES, GrowableOresExtension.MODID);
 
-    public static void registeralchemyscreenhandlertype () {
+    public static final RegistryObject<MenuType<AlchemyBlockScreenHandler>> ALCHEMY =
+            registerMenuType( "cane_converter_screen_handler", AlchemyBlockScreenHandler::new);
 
+    private static <T extends AbstractContainerMenu> RegistryObject<MenuType<T>> registerMenuType(String name,
+                                                                                                  IContainerFactory<T> factory) {
+        return MENUS.register(name, () -> IForgeMenuType.create(factory));
+    }
+
+    public static void registeralchemyscreenhandlertype (IEventBus eventBus) {
+        MENUS.register(eventBus);
     }
 }

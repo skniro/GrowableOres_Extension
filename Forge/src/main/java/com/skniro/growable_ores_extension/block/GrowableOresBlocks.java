@@ -1,32 +1,46 @@
 package com.skniro.growable_ores_extension.block;
 
-import com.skniro.growable_ores_extension.util.GrowableOresItemGroups;
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.Identifier;
+import com.skniro.growable_ores_extension.GrowableOresExtension;
+import com.skniro.growable_ores_extension.item.MapleItems;
+import com.skniro.growable_ores_extension.item.ModCreativeModeTabs;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+import java.util.function.Supplier;
 
 public class GrowableOresBlocks {
-    public static final Block GrowableOres_Block =registerBlock("growableores_block",new Alchemyblock(AbstractBlock.Settings.create().requiresTool().strength(3.0F, 3.0F)), GrowableOresItemGroups.Growable_Ores_Group);
+    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, GrowableOresExtension.MODID);
 
-    private static Block registerBlockWithoutItem(String name, Block block) {
-        return Registry.register(Registries.BLOCK, Identifier.of(GrowableOresExtension.MOD_ID, name), block);
-    }
-    private static Block registerBlock(String name, Block block, RegistryKey<ItemGroup> tab) {
-        registerBlockItem(name, block, tab);
-        return Registry.register(Registries.BLOCK, Identifier.of(GrowableOresExtension.MOD_ID, name), block);
-    }
-    private static Item registerBlockItem(String name, Block block, RegistryKey<ItemGroup> tab) {
-        return Registry.register(Registries.ITEM, Identifier.of(GrowableOresExtension.MOD_ID, name),
-                new BlockItem(block, new Item.Settings()));
+    public static final RegistryObject<Block> GrowableOres_Block =registerBlock("growableores_block",
+            () -> new Alchemyblock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+
+
+
+    private static <T extends Block> RegistryObject<T> registerBlockWithoutItem(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = BLOCKS.register(name, block);
+        return toReturn;
     }
 
-    public static void registerGrowableOresBlocks() {
-        GrowableOresExtension.LOGGER.info("Registering GrowableOres Blocks for " + GrowableOresExtension.MOD_ID);
+    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
+        RegistryObject<T> toReturn = BLOCKS.register(name, block);
+        registerBlockItem(name, toReturn);
+        return toReturn;
+    }
+
+    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
+        return MapleItems.ITEMS.register(name, () -> new BlockItem(block.get(),
+                new Item.Properties()));
+    }
+
+    public static void registerBlocks(IEventBus eventBus) {
+        BLOCKS.register(eventBus);
     }
 }

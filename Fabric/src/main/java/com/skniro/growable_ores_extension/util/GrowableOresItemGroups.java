@@ -1,7 +1,7 @@
 package com.skniro.growable_ores_extension.util;
 
 import com.skniro.growable_ores_extension.GrowableOresExtension;
-import com.skniro.growable_ores_extension.GrowableOresBlocks;
+import com.skniro.growable_ores_extension.block.GrowableOresBlocks;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

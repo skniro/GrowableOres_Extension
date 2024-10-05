@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "cIc",
+        "RFR",
+        "cIc"
+    ],
+    "key": {
+        "c": {
+            "item": "minecraft:copper_ingot"
+        },
+        "I": {
+            "item": "minecraft:iron_block"
+        },
+        "R": {
+            "item": "minecraft:redstone"
+        },
+        "F": {
+            "item": "minecraft:furnace"
+        }
+    },
+    "result": {
+        "id": "growable_ores_extension:growableores_block",
+        "count": 1
+    }
+}

@@ -2,7 +2,7 @@ package com.skniro.growable_ores_extension.block.entity;
 
 import com.mojang.datafixers.types.Type;
 import com.skniro.growable_ores_extension.GrowableOresExtension;
-import com.skniro.growable_ores_extension.GrowableOresBlocks;
+import com.skniro.growable_ores_extension.block.GrowableOresBlocks;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.datafixer.TypeReferences;

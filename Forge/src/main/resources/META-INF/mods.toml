@@ -3,7 +3,7 @@ loaderVersion="${loader_version_range}"
 license="${mod_license}"
 
 [[mods]]
-modId="growable_ores"
+modId="growable_ores_extension"
 version="${forge_mod_version}"
 displayName="${mod_name}"
 authors="${mod_authors}"
@@ -11,16 +11,23 @@ description='''${mod_description}'''
 credits = "Rafan,gilnet,All translators"
 
 
-[[dependencies.growable_ores]]
+[[dependencies.growable_ores_extension]]
 modId="forge"
 mandatory=true
 versionRange="${forge_version_range}"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.growable_ores]]
+[[dependencies.growable_ores_extension]]
 modId="minecraft"
 mandatory=true
 versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.growable_ores_extension]]
+modId="growable_ores"
+mandatory=true
+versionRange="*"
 ordering="NONE"
 side="BOTH"

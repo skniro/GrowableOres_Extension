@@ -14,7 +14,7 @@ loaderVersion="${loader_version_range}" #mandatory
 license="${mod_license}"
 
 [[mixins]]
-config="growable_ores.mixins.json"
+config="growable_ores_extension.mixins.json"
 
 # A URL to refer people to when problems occur with this mod
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
@@ -23,7 +23,7 @@ config="growable_ores.mixins.json"
 [[mods]] #mandatory
 
 # The modid of the mod
-modId="growable_ores" #mandatory
+modId="growable_ores_extension" #mandatory
 
 # The version number of the mod
 version="${project.mod_version}" #mandatory
@@ -71,7 +71,7 @@ description='''${project.mod_description}'''
 # The coremods config file path is not configurable and is always loaded from META-INF/coremods.json
 
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.growable_ores]] #optional
+[[dependencies.growable_ores_extension]] #optional
 # the modid of the dependency
 modId="neoforge" #mandatory
 # The type of the dependency. Can be one of "required", "optional", "incompatible" or "discouraged" (case insensitive).
@@ -90,11 +90,18 @@ ordering="NONE"
 side="BOTH"
 
 # Here's another dependency
-[[dependencies.growable_ores]]
+[[dependencies.growable_ores_extension]]
 modId="minecraft"
 type="required"
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
 versionRange="${minecraft_version_range}"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.growable_ores_extension]]
+modId="growable_ores"
+mandatory=true
+versionRange="*"
 ordering="NONE"
 side="BOTH"
 
