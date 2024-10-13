@@ -28,19 +28,14 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 public class Alchemyblock extends BaseEntityBlock {
     public Alchemyblock(Properties settings) {
         super(settings);
     }
-    public static final MapCodec<Alchemyblock> CODEC = simpleCodec(Alchemyblock::new);
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
-
-    @Override
-    protected MapCodec<? extends BaseEntityBlock> codec() {
-        return CODEC;
-    }
 
     private static VoxelShape SHAPE = Block.box(0, 0, 0, 16, 10, 16);
 
@@ -92,7 +87,7 @@ public class Alchemyblock extends BaseEntityBlock {
             MenuProvider screenHandlerFactory = state.getMenuProvider(world, pos);
             BlockEntity entity = world.getBlockEntity(pos);
             if (entity instanceof Alchemyblockentity alchemyblockentity) {
-                ((ServerPlayer) player).openMenu(new SimpleMenuProvider(alchemyblockentity, Component.translatable("gui.growableores.cane_converter")), pos);
+                NetworkHooks.openScreen(((ServerPlayer)player), alchemyblockentity, pos);
             }
         }
 

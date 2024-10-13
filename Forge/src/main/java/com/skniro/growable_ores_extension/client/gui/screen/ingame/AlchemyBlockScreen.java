@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScreenHandler> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(GrowableOresExtension.MODID, "textures/gui/container/cane_converter.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.tryBuild(GrowableOresExtension.MODID, "textures/gui/container/cane_converter.png");
 
     public AlchemyBlockScreen(AlchemyBlockScreenHandler handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
@@ -50,7 +50,7 @@ public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScre
 
     @Override
     public void render(GuiGraphics context , int mouseX, int mouseY, float delta) {
-        renderBackground(context, mouseX, mouseY, delta);
+        renderBackground(context);
         super.render(context, mouseX, mouseY, delta);
         renderTooltip(context, mouseX, mouseY);
     }

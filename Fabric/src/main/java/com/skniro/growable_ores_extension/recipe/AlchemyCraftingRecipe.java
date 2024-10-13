@@ -23,10 +23,12 @@ import java.util.List;
 
 
 public class AlchemyCraftingRecipe implements Recipe<SimpleInventory> {
+    private final Identifier id;
     private final ItemStack output;
     private final List<Ingredient> recipeItems;
 
-    public AlchemyCraftingRecipe(List<Ingredient> recipeItems,ItemStack output) {
+    public AlchemyCraftingRecipe(Identifier id,ItemStack output, List<Ingredient> recipeItems) {
+        this.id = id;
         this.output = output;
         this.recipeItems = recipeItems;
     }
@@ -50,7 +52,7 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleInventory> {
     }
 
     @Override
-    public ItemStack getResult(DynamicRegistryManager registryManager) {
+    public ItemStack getOutput(DynamicRegistryManager registryManager) {
         return output;
     }
 
@@ -59,6 +61,11 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleInventory> {
         DefaultedList<Ingredient> list = DefaultedList.ofSize(this.recipeItems.size());
         list.addAll(recipeItems);
         return list;
+    }
+
+    @Override
+    public Identifier getId() {
+        return id;
     }
 
     @Override
@@ -72,32 +79,33 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleInventory> {
     }
 
     public static class Serializer implements RecipeSerializer<AlchemyCraftingRecipe> {
-        public static final Codec<AlchemyCraftingRecipe> CODEC = RecordCodecBuilder.create(in -> in.group(
-                validateAmount(Ingredient.DISALLOW_EMPTY_CODEC, 9).fieldOf("ingredient").forGetter(AlchemyCraftingRecipe::getIngredients),
-                ItemStack.RECIPE_RESULT_CODEC.fieldOf("result").forGetter(r -> r.output)
-        ).apply(in, AlchemyCraftingRecipe::new));
+        public static final Serializer INSTANCE = new Serializer();
 
-        private static Codec<List<Ingredient>> validateAmount(Codec<Ingredient> delegate, int max) {
-            return Codecs.validate(Codecs.validate(
-                    delegate.listOf(), list -> list.size() > max ? DataResult.error(() -> "Recipe has too many ingredients!") : DataResult.success(list)
-            ), list -> list.isEmpty() ? DataResult.error(() -> "Recipe has no ingredients!") : DataResult.success(list));
+
+        @Override
+        public AlchemyCraftingRecipe read(Identifier id, JsonObject json) {
+            ItemStack output = ShapedRecipe.outputFromJson(JsonHelper.getObject(json, "result"));
+
+            JsonArray ingredients = JsonHelper.getArray(json, "ingredient");
+            DefaultedList<Ingredient> inputs = DefaultedList.ofSize(1, Ingredient.EMPTY);
+
+            for (int i = 0; i < inputs.size(); i++) {
+                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
+            }
+
+            return new AlchemyCraftingRecipe(id, output, inputs);
         }
 
         @Override
-        public Codec<AlchemyCraftingRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public AlchemyCraftingRecipe read(PacketByteBuf buf) {
+        public AlchemyCraftingRecipe read(Identifier id, PacketByteBuf buf) {
             DefaultedList<Ingredient> inputs = DefaultedList.ofSize(buf.readInt(), Ingredient.EMPTY);
 
-            for(int i = 0; i < inputs.size(); i++) {
+            for (int i = 0; i < inputs.size(); i++) {
                 inputs.set(i, Ingredient.fromPacket(buf));
             }
 
             ItemStack output = buf.readItemStack();
-            return new AlchemyCraftingRecipe(inputs, output);
+            return new AlchemyCraftingRecipe(id, output, inputs);
         }
 
         @Override
@@ -108,7 +116,7 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleInventory> {
                 ingredient.write(buf);
             }
 
-            buf.writeItemStack(recipe.getResult(null));
+            buf.writeItemStack(recipe.getOutput(null));
         }
     }
 }

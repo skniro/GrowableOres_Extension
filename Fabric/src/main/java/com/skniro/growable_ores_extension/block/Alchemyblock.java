@@ -28,13 +28,8 @@ public class Alchemyblock extends BlockWithEntity {
     public Alchemyblock(Settings settings) {
         super(settings);
     }
-    public static final MapCodec<Alchemyblock> CODEC = createCodec(Alchemyblock::new);
     public static final DirectionProperty FACING = Properties.HORIZONTAL_FACING;
 
-    @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return CODEC;
-    }
 
     private static VoxelShape SHAPE = Block.createCuboidShape(0, 0, 0, 16, 10, 16);
 
@@ -102,7 +97,7 @@ public class Alchemyblock extends BlockWithEntity {
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker(type, AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY, (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));
+        return checkType(type, AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY,
+                (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));
     }
-
 }

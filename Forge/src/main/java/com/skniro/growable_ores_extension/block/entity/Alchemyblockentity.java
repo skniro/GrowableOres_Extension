@@ -1,11 +1,9 @@
 package com.skniro.growable_ores_extension.block.entity;
-import java.util.Optional;
 
 import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipe;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
 import com.skniro.growable_ores_extension.screen.AlchemyBlockScreenHandler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -20,11 +18,12 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class Alchemyblockentity extends BlockEntity implements MenuProvider, ImplementedInventory {
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(4, ItemStack.EMPTY);
@@ -130,10 +129,10 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     }
 
     private void craftItem() {
-        Optional<RecipeHolder<AlchemyCraftingRecipe>> recipe = getCurrentRecipe();
+        Optional<AlchemyCraftingRecipe> recipe = getCurrentRecipe();
         this.removeItem(INPUT_SLOT, 1);
-        this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().value().getResultItem(null).getItem(),
-                this.getItem(OUTPUT_SLOT).getCount() + recipe.get().value().getResultItem(null).getCount()));
+        this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().getResultItem(null).getItem(),
+                this.getItem(OUTPUT_SLOT).getCount() + recipe.get().getResultItem(null).getCount()));
     }
 
     private boolean hasCraftingFinished() {
@@ -150,15 +149,15 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     }
 
     private boolean hasRecipe() {
-        Optional<RecipeHolder<AlchemyCraftingRecipe>> recipe = getCurrentRecipe();
+        Optional<AlchemyCraftingRecipe> recipe = getCurrentRecipe();
         if(recipe.isEmpty()) {
             return false;
         }
 
-        ItemStack output = recipe.get().value().getResultItem(null);
+        ItemStack output = recipe.get().getResultItem(null);
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
-    private Optional<RecipeHolder<AlchemyCraftingRecipe>> getCurrentRecipe() {
+    private Optional<AlchemyCraftingRecipe> getCurrentRecipe() {
         SimpleContainer inv = new SimpleContainer(this.getContainerSize());
         for(int i = 0; i < this.getContainerSize(); i++) {
             inv.setItem(i, this.getItem(i));

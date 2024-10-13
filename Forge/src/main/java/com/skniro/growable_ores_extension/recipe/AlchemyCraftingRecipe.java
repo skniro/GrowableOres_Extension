@@ -1,31 +1,36 @@
 package com.skniro.growable_ores_extension.recipe;
 
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.GsonHelper;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.List;
 
 
 
 public class AlchemyCraftingRecipe implements Recipe<SimpleContainer> {
+    private final ResourceLocation id;
     private final ItemStack output;
     private final List<Ingredient> recipeItems;
 
-    public AlchemyCraftingRecipe(List<Ingredient> recipeItems,ItemStack output) {
+    public AlchemyCraftingRecipe(List<Ingredient> recipeItems,ItemStack output, ResourceLocation id) {
         this.output = output;
         this.recipeItems = recipeItems;
+        this.id = id;
     }
 
     @Override
@@ -61,6 +66,11 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
+    public ResourceLocation getId() {
+        return id;
+    }
+
+    @Override
     public RecipeSerializer<?> getSerializer() {
         return AlchemyRecipeType.Cane_Converter_SERIALIZER.get();
     }
@@ -72,33 +82,27 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleContainer> {
 
     public static class Serializer implements RecipeSerializer<AlchemyCraftingRecipe> {
         public static final Serializer INSTANCE = new Serializer();
-
-        public static final Codec<AlchemyCraftingRecipe> CODEC = RecordCodecBuilder.create(in -> in.group(
-                validateAmount(Ingredient.CODEC_NONEMPTY, 9).fieldOf("ingredient").forGetter(AlchemyCraftingRecipe::getIngredients),
-                ItemStack.ITEM_WITH_COUNT_CODEC.fieldOf("result").forGetter(r -> r.output)
-        ).apply(in, AlchemyCraftingRecipe::new));
-
-        private static Codec<List<Ingredient>> validateAmount(Codec<Ingredient> delegate, int max) {
-            return ExtraCodecs.validate(ExtraCodecs.validate(
-                    delegate.listOf(), list -> list.size() > max ? DataResult.error(() -> "Recipe has too many ingredients!") : DataResult.success(list)
-            ), list -> list.isEmpty() ? DataResult.error(() -> "Recipe has no ingredients!") : DataResult.success(list));
-        }
-
         @Override
-        public Codec<AlchemyCraftingRecipe> codec() {
-            return CODEC;
-        }
-
-        @Override
-        public AlchemyCraftingRecipe fromNetwork(FriendlyByteBuf buf) {
-            NonNullList<Ingredient> inputs = NonNullList.withSize(buf.readInt(), Ingredient.EMPTY);
+        public AlchemyCraftingRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
+            ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "result"));
+            JsonArray ingredients = GsonHelper.getAsJsonArray(jsonObject, "ingredient");
+            NonNullList<Ingredient> inputs = NonNullList.withSize(1, Ingredient.EMPTY);
 
             for(int i = 0; i < inputs.size(); i++) {
-                inputs.set(i, Ingredient.fromNetwork(buf));
+                inputs.set(i, Ingredient.fromJson(ingredients.get(i)));
             }
 
-            ItemStack output = buf.readItem();
-            return new AlchemyCraftingRecipe(inputs, output);
+            return new AlchemyCraftingRecipe(inputs, output, resourceLocation);
+        }
+
+        @Override
+        public @Nullable AlchemyCraftingRecipe fromNetwork(ResourceLocation resourceLocation, FriendlyByteBuf friendlyByteBuf) {
+            NonNullList<Ingredient> inputs = NonNullList.withSize(friendlyByteBuf.readInt(), Ingredient.EMPTY);
+            for(int i = 0; i < inputs.size(); i++) {
+                inputs.set(i, Ingredient.fromNetwork(friendlyByteBuf));
+            }
+            ItemStack output = friendlyByteBuf.readItem();
+            return new AlchemyCraftingRecipe(inputs, output, resourceLocation);
         }
 
         @Override

@@ -1,5 +1,4 @@
 package com.skniro.growable_ores_extension.block.entity;
-import java.util.Optional;
 
 import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipe;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
@@ -17,8 +16,6 @@ import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.recipe.RecipeEntry;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -27,6 +24,8 @@ import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
@@ -137,10 +136,10 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     }
 
     private void craftItem() {
-        Optional<RecipeEntry<AlchemyCraftingRecipe>> recipe = getCurrentRecipe();
+        Optional<AlchemyCraftingRecipe> recipe = getCurrentRecipe();
         this.removeStack(INPUT_SLOT, 1);
-        this.setStack(OUTPUT_SLOT, new ItemStack(recipe.get().value().getResult(null).getItem(),
-                this.getStack(OUTPUT_SLOT).getCount() + recipe.get().value().getResult(null).getCount()));
+        this.setStack(OUTPUT_SLOT, new ItemStack(recipe.get().getOutput(null).getItem(),
+                this.getStack(OUTPUT_SLOT).getCount() + recipe.get().getOutput(null).getCount()));
     }
 
     private boolean hasCraftingFinished() {
@@ -157,16 +156,16 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     }
 
     private boolean hasRecipe() {
-        Optional<RecipeEntry<AlchemyCraftingRecipe>> recipe = getCurrentRecipe();
+        Optional<AlchemyCraftingRecipe> recipe = getCurrentRecipe();
         if(recipe.isEmpty()) {
             return false;
         }
 
-        ItemStack output = recipe.get().value().getResult(null);
+        ItemStack output = recipe.get().getOutput(null);
         return recipe.isPresent() && canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
 
-    private Optional<RecipeEntry<AlchemyCraftingRecipe>> getCurrentRecipe() {
+    private Optional<AlchemyCraftingRecipe> getCurrentRecipe() {
         SimpleInventory inv = new SimpleInventory(this.size());
         for(int i = 0; i < this.size(); i++) {
             inv.setStack(i, this.getStack(i));
