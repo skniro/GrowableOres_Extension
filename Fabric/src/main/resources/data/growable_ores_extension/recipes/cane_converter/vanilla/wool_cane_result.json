@@ -1,0 +1,12 @@
+{
+  "type": "growable_ores_extension:cane_converter",
+
+  "ingredient": [ {
+      "item": "growable_ores:wool_cane"
+  }
+  ],
+    "result": {
+        "item": "minecraft:white_wool",
+    "count": 2
+  }
+}

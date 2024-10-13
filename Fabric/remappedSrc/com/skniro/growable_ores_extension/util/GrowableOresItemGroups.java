@@ -10,15 +10,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.ItemStack;
 
 public class GrowableOresItemGroups {
-    public static final ResourceKey<CreativeModeTab> Growable_Ores_Group = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.fromNamespaceAndPath(GrowableOresExtension.MOD_ID, "test_group"));
+    public static final ResourceKey<CreativeModeTab> Growable_Ores_Group = ResourceKey.create(Registries.CREATIVE_MODE_TAB, ResourceLocation.tryBuild(GrowableOresExtension.MOD_ID, "test_group"));
 
     public static void vanilla_item() {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, Growable_Ores_Group, FabricItemGroup.builder()
                 .icon(() -> new ItemStack(GrowableOresBlocks.GrowableOres_Block))
-                .title(Component.translatable("itemGroup.growable_ores.test_group"))
+                .displayName(Component.translatable("itemGroup.growable_ores.test_group"))
                 .build()); // build() no longer registers by itself
 
     }

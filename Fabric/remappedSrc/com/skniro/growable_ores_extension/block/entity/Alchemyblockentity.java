@@ -2,20 +2,20 @@ package com.skniro.growable_ores_extension.block.entity;
 import java.util.Optional;
 
 import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipe;
-import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
 import com.skniro.growable_ores_extension.screen.AlchemyBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -23,11 +23,10 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory {
+public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(4, ItemStack.EMPTY);
     private float rotation = 0;
     private static final int FLUID_ITEM_SLOT = 0;
@@ -68,17 +67,17 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     }
 
     public ItemStack getRenderStack() {
-            return this.getItem(INPUT_SLOT);
+            return this.getStack(INPUT_SLOT);
     }
     @Override
-    public void setChanged() {
-        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        super.setChanged();
+    public void markDirty() {
+        world.updateListeners(pos, getCachedState(), getCachedState(), 3);
+        super.markDirty();
     }
 
     @Override
-    public BlockPos getScreenOpeningData(ServerPlayer player) {
-        return this.worldPosition;
+    public void writeScreenOpeningData(ServerPlayer player, FriendlyByteBuf buf) {
+        buf.writeBlockPos(this.pos);
     }
 
     @Override
@@ -98,19 +97,19 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
-        super.saveAdditional(nbt, registryLookup);
-        ContainerHelper.saveAllItems(nbt, inventory, registryLookup);
+    protected void writeNbt(CompoundTag nbt) {
+        super.writeNbt(nbt);
+        ContainerHelper.saveAllItems(nbt, inventory);
         nbt.putInt("cane_converter.progress", progress);
         nbt.putInt("cane_converter.max_progress", maxProgress);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
-        ContainerHelper.loadAllItems(nbt, inventory, registryLookup);
+    public void readNbt(CompoundTag nbt) {
+        ContainerHelper.loadAllItems(nbt, inventory);
         progress = nbt.getInt("cane_converter.progress");
         maxProgress = nbt.getInt("cane_converter.max_progress");
-        super.loadAdditional(nbt, registryLookup);
+        super.readNbt(nbt);
     }
 
     public void tick(Level world, BlockPos pos, BlockState state) {
@@ -119,7 +118,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
         }
         if(hasRecipe() && canInsertIntoOutputSlot()) {
             increaseCraftingProgress();
-            setChanged(world, pos, state);
+            markDirty(world, pos, state);
 
             if(hasCraftingFinished()) {
                 craftItem();
@@ -137,9 +136,9 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
 
     private void craftItem() {
         Optional<RecipeHolder<AlchemyCraftingRecipe>> recipe = getCurrentRecipe();
-        this.removeItem(INPUT_SLOT, 1);
-        this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().value().output().getItem(),
-                this.getItem(OUTPUT_SLOT).getCount() + recipe.get().value().output().getCount()));
+        this.removeStack(INPUT_SLOT, 1);
+        this.setStack(OUTPUT_SLOT, new ItemStack(recipe.get().value().getResult(null).getItem(),
+                this.getStack(OUTPUT_SLOT).getCount() + recipe.get().value().getResult(null).getCount()));
     }
 
     private boolean hasCraftingFinished() {
@@ -151,8 +150,8 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     }
 
     private boolean canInsertIntoOutputSlot() {
-        return this.getItem(OUTPUT_SLOT).isEmpty() ||
-                this.getItem(OUTPUT_SLOT).getCount() < this.getItem(OUTPUT_SLOT).getMaxStackSize();
+        return this.getStack(OUTPUT_SLOT).isEmpty() ||
+                this.getStack(OUTPUT_SLOT).getCount() < this.getStack(OUTPUT_SLOT).getMaxStackSize();
     }
 
     private boolean hasRecipe() {
@@ -161,34 +160,38 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
             return false;
         }
 
-        ItemStack output = recipe.get().value().getResultItem(null);
-        return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
+        ItemStack output = recipe.get().value().getResult(null);
+        return recipe.isPresent() && canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
     private Optional<RecipeHolder<AlchemyCraftingRecipe>> getCurrentRecipe() {
-        return this.getLevel().getRecipeManager()
-                .getRecipeFor(AlchemyRecipeType.Cane_Converter_TYPE, new AlchemyCraftingRecipeInput(inventory.get(INPUT_SLOT)), this.getLevel());
+        SimpleContainer inv = new SimpleContainer(this.size());
+        for(int i = 0; i < this.size(); i++) {
+            inv.setItem(i, this.getStack(i));
+        }
+        return this.getWorld().getRecipeManager()
+                .getFirstMatch(AlchemyRecipeType.Cane_Converter_TYPE, inv, this.getWorld());
     }
 
     private boolean canInsertItemIntoOutputSlot(ItemStack output) {
-        return this.getItem(OUTPUT_SLOT).isEmpty() || this.getItem(OUTPUT_SLOT).getItem() == output.getItem();
+        return this.getStack(OUTPUT_SLOT).isEmpty() || this.getStack(OUTPUT_SLOT).getItem() == output.getItem();
     }
 
     private boolean canInsertAmountIntoOutputSlot(int count) {
-    int maxCount = this.getItem(OUTPUT_SLOT).isEmpty() ? 64 : this.getItem(OUTPUT_SLOT).getMaxStackSize();
-    int currentCount = this.getItem(OUTPUT_SLOT).getCount();
+    int maxCount = this.getStack(OUTPUT_SLOT).isEmpty() ? 64 : this.getStack(OUTPUT_SLOT).getMaxStackSize();
+    int currentCount = this.getStack(OUTPUT_SLOT).getCount();
 
         return maxCount >= currentCount + count;
 }
 
    @Nullable
    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
+    public Packet<ClientGamePacketListener> toUpdatePacket() {
     return ClientboundBlockEntityDataPacket.create(this);
 }
 
 
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registryLookup) {
-        return saveWithoutMetadata(registryLookup);
+    public CompoundTag toInitialChunkDataNbt() {
+        return createNbt();
     }
 }

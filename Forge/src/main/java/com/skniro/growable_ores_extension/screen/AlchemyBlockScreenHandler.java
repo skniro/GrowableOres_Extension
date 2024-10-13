@@ -11,11 +11,13 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
 
 public class AlchemyBlockScreenHandler extends AbstractContainerMenu {
     private final Container inventory;
+    private final Level level;
     private final ContainerData propertyDelegate;
     public final Alchemyblockentity blockEntity;
 
@@ -26,11 +28,12 @@ public class AlchemyBlockScreenHandler extends AbstractContainerMenu {
 
     public AlchemyBlockScreenHandler(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData delegate) {
         super(AlchemyScreenHandlerType.ALCHEMY.get(), syncId);
-        checkContainerSize((Container) blockEntity,4);
-        this.inventory = (Container) blockEntity;
+        checkContainerSize(playerInventory,4);
+        this.inventory = (Alchemyblockentity) blockEntity;
         inventory.startOpen(playerInventory.player);
         this.propertyDelegate = delegate;
         this.blockEntity = (Alchemyblockentity) blockEntity;
+        this.level = playerInventory.player.level();
         this.addSlot(new Slot(inventory, 1, 52, 34));
         this.addSlot(new Slot(inventory, 2, 100, 34));
 

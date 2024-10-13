@@ -12,7 +12,7 @@ import net.minecraft.util.math.BlockPos;
 public class AlchemyScreenHandlerType <T extends ScreenHandler>{
     public static final ScreenHandlerType<AlchemyBlockScreenHandler> ALCHEMY =
             Registry.register(Registries.SCREEN_HANDLER, Identifier.of(GrowableOresExtension.MOD_ID, "cane_converter_screen_handler"),
-                    new ExtendedScreenHandlerType<>(AlchemyBlockScreenHandler::new, BlockPos.PACKET_CODEC));
+                    new ExtendedScreenHandlerType<>(AlchemyBlockScreenHandler::new));
 
     public static void registeralchemyscreenhandlertype () {
 

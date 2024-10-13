@@ -25,11 +25,11 @@ public class AlchemyblockentityRenderer implements BlockEntityRenderer<Alchemybl
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack stack = entity.getRenderStack();
         matrices.pushPose();
-        matrices.translate(-0.01f, 0.5f, 0.5f);
+        matrices.translate(0.5f, 1.01f, 0.5f);
         matrices.scale(0.35f, 0.35f, 0.35f);
         matrices.mulPose(Axis.YP.rotationDegrees(270));
-        itemRenderer.renderStatic(stack, ItemDisplayContext.GUI, getLightLevel(entity.getLevel(),
-                entity.getBlockPos()), OverlayTexture.NO_OVERLAY, matrices, vertexConsumers, entity.getLevel(), 1);
+        itemRenderer.renderStatic(stack, ItemDisplayContext.GUI, getLightLevel(entity.getWorld(),
+                entity.getPos()), OverlayTexture.NO_OVERLAY, matrices, vertexConsumers, entity.getWorld(), 1);
         matrices.popPose();
     }
     private int getLightLevel(Level world, BlockPos pos) {

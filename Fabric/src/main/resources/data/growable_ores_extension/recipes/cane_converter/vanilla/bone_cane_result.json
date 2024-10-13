@@ -1,0 +1,12 @@
+{
+  "type": "growable_ores_extension:cane_converter",
+
+  "ingredient": [ {
+      "item": "growable_ores:bone_cane"
+  }
+  ],
+    "result": {
+        "item": "minecraft:bone",
+    "count": 2
+  }
+}

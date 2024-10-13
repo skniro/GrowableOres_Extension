@@ -22,7 +22,7 @@ public class AlchemyBlockEntityType {
 
     private static <T extends BlockEntity> BlockEntityType<T> create(String id, BlockEntityType.Builder<T> builder) {
         Type<?> type = Util.fetchChoiceType(References.BLOCK_ENTITY, id);
-        return (BlockEntityType) Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(GrowableOresExtension.MOD_ID,id), builder.build(null));
+        return (BlockEntityType) Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, ResourceLocation.tryBuild(GrowableOresExtension.MOD_ID,id), builder.build(null));
     }
 
     public static void registerMapleBlockEntityType() {

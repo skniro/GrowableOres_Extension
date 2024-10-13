@@ -10,7 +10,7 @@ public class GrowableTagGenerator extends FabricTagProvider.BlockTagProvider {
         super(output, completableFuture);
    }
    @Override
-   protected void addTags(HolderLookup.Provider arg) {
+   protected void configure(HolderLookup.Provider arg) {
 
 
    }

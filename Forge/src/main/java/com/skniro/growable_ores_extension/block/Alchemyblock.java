@@ -49,11 +49,11 @@ public class Alchemyblock extends BaseEntityBlock {
         return SHAPE;
     }
     @Override
-    protected BlockState rotate(BlockState state, Rotation rotation) {
+    public BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
     }
     @Override
-    protected BlockState mirror(BlockState state, Mirror mirror) {
+    public BlockState mirror(BlockState state, Mirror mirror) {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
     @Nullable
@@ -87,7 +87,7 @@ public class Alchemyblock extends BaseEntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!world.isClientSide) {
             MenuProvider screenHandlerFactory = state.getMenuProvider(world, pos);
             BlockEntity entity = world.getBlockEntity(pos);
@@ -96,7 +96,7 @@ public class Alchemyblock extends BaseEntityBlock {
             }
         }
 
-        return ItemInteractionResult.sidedSuccess(world.isClientSide());
+        return InteractionResult.sidedSuccess(world.isClientSide());
     }
 
     @Nullable

@@ -1,0 +1,11 @@
+{
+  "type": "growable_ores_extension:cane_converter",
+  "ingredient": [ {
+      "item": "growable_ores:slime_cane"
+  }
+  ],
+    "result": {
+        "item": "minecraft:slime_ball",
+    "count": 1
+  }
+}

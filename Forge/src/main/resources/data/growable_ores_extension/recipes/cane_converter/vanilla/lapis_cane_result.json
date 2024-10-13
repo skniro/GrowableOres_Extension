@@ -1,0 +1,12 @@
+{
+  "type": "growable_ores_extension:cane_converter",
+
+  "ingredient": [ {
+      "item": "growable_ores:lapis_cane"
+  }
+  ],
+    "result": {
+        "item": "minecraft:lapis_lazuli",
+    "count": 1
+  }
+}

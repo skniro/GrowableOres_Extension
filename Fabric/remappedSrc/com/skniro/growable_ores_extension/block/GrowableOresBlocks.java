@@ -16,14 +16,14 @@ public class GrowableOresBlocks {
     public static final Block GrowableOres_Block =registerBlock("growableores_block",new Alchemyblock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F)), GrowableOresItemGroups.Growable_Ores_Group);
 
     private static Block registerBlockWithoutItem(String name, Block block) {
-        return Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(GrowableOresExtension.MOD_ID, name), block);
+        return Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.tryBuild(GrowableOresExtension.MOD_ID, name), block);
     }
     private static Block registerBlock(String name, Block block, ResourceKey<CreativeModeTab> tab) {
         registerBlockItem(name, block, tab);
-        return Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.fromNamespaceAndPath(GrowableOresExtension.MOD_ID, name), block);
+        return Registry.register(BuiltInRegistries.BLOCK, ResourceLocation.tryBuild(GrowableOresExtension.MOD_ID, name), block);
     }
     private static Item registerBlockItem(String name, Block block, ResourceKey<CreativeModeTab> tab) {
-        return Registry.register(BuiltInRegistries.ITEM, ResourceLocation.fromNamespaceAndPath(GrowableOresExtension.MOD_ID, name),
+        return Registry.register(BuiltInRegistries.ITEM, ResourceLocation.tryBuild(GrowableOresExtension.MOD_ID, name),
                 new BlockItem(block, new Item.Properties()));
     }
 

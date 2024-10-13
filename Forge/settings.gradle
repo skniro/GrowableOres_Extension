@@ -2,6 +2,10 @@ pluginManagement {
     repositories {
         gradlePluginPortal()
         maven { url = 'https://maven.minecraftforge.net/' }
+        maven{
+            name = 'skniro'
+            url  = 'https://raw.githubusercontent.com/skniro/maven3/main/'
+        }
     }
 }
 plugins {

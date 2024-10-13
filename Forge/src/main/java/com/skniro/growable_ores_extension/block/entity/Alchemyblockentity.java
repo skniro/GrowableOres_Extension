@@ -2,11 +2,9 @@ package com.skniro.growable_ores_extension.block.entity;
 import java.util.Optional;
 
 import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipe;
-import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
 import com.skniro.growable_ores_extension.screen.AlchemyBlockScreenHandler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -14,9 +12,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -26,10 +24,6 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Alchemyblockentity extends BlockEntity implements MenuProvider, ImplementedInventory {
@@ -98,19 +92,19 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
-        super.saveAdditional(nbt, registryLookup);
-        ContainerHelper.saveAllItems(nbt, inventory, registryLookup);
+    protected void saveAdditional(CompoundTag nbt) {
+        super.saveAdditional(nbt);
+        ContainerHelper.saveAllItems(nbt, inventory);
         nbt.putInt("cane_converter.progress", progress);
         nbt.putInt("cane_converter.max_progress", maxProgress);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
-        ContainerHelper.loadAllItems(nbt, inventory, registryLookup);
+    public void load(CompoundTag nbt) {
+        ContainerHelper.loadAllItems(nbt, inventory);
         progress = nbt.getInt("cane_converter.progress");
         maxProgress = nbt.getInt("cane_converter.max_progress");
-        super.loadAdditional(nbt, registryLookup);
+        super.load(nbt);
     }
 
     public void tick(Level world, BlockPos pos, BlockState state) {
@@ -138,8 +132,8 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     private void craftItem() {
         Optional<RecipeHolder<AlchemyCraftingRecipe>> recipe = getCurrentRecipe();
         this.removeItem(INPUT_SLOT, 1);
-        this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().value().output().getItem(),
-                this.getItem(OUTPUT_SLOT).getCount() + recipe.get().value().output().getCount()));
+        this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().value().getResultItem(null).getItem(),
+                this.getItem(OUTPUT_SLOT).getCount() + recipe.get().value().getResultItem(null).getCount()));
     }
 
     private boolean hasCraftingFinished() {
@@ -165,8 +159,12 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
     private Optional<RecipeHolder<AlchemyCraftingRecipe>> getCurrentRecipe() {
+        SimpleContainer inv = new SimpleContainer(this.getContainerSize());
+        for(int i = 0; i < this.getContainerSize(); i++) {
+            inv.setItem(i, this.getItem(i));
+        }
         return this.getLevel().getRecipeManager()
-                .getRecipeFor(AlchemyRecipeType.Cane_Converter_TYPE.get(), new AlchemyCraftingRecipeInput(inventory.get(INPUT_SLOT)), this.getLevel());
+                .getRecipeFor(AlchemyRecipeType.Cane_Converter_TYPE.get(), inv, this.getLevel());
     }
 
     private boolean canInsertItemIntoOutputSlot(ItemStack output) {
@@ -186,9 +184,8 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     return ClientboundBlockEntityDataPacket.create(this);
 }
 
-
     @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registryLookup) {
-        return saveWithoutMetadata(registryLookup);
+    public CompoundTag getUpdateTag() {
+        return saveWithoutMetadata();
     }
 }

@@ -1,0 +1,12 @@
+{
+  "type": "growable_ores_extension:cane_converter",
+
+  "ingredient": [ {
+      "item": "growable_ores:netherite_ingot_cane"
+  }
+  ],
+    "result": {
+        "item": "minecraft:netherite_ingot",
+    "count": 1
+  }
+}

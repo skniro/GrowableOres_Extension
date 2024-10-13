@@ -1,0 +1,12 @@
+{
+  "type": "growable_ores_extension:cane_converter",
+
+  "ingredient": [ {
+      "item": "growable_ores:blaze_rod_cane"
+  }
+  ],
+    "result": {
+        "item": "minecraft:blaze_rod",
+    "count": 1
+  }
+}

@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 @Environment(EnvType.CLIENT)
 public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScreenHandler> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(GrowableOresExtension.MOD_ID, "textures/gui/container/cane_converter.png");
+    private static final ResourceLocation TEXTURE = ResourceLocation.tryBuild(GrowableOresExtension.MOD_ID, "textures/gui/container/cane_converter.png");
 
     public AlchemyBlockScreen(AlchemyBlockScreenHandler handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
@@ -23,24 +23,24 @@ public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScre
     @Override
     protected void init() {
         super.init();
-        titleLabelX = (imageWidth - font.width(title)) / 2;
+        titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
     }
 
     @Override
-    protected void renderBg(GuiGraphics context, float delta, int mouseX, int mouseY) {
+    protected void drawBackground(GuiGraphics context, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-        context.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        int x = (width - backgroundWidth) / 2;
+        int y = (height - backgroundHeight) / 2;
+        context.blit(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
         renderProgressArrow(context, x, y);
     }
 
     private void renderProgressArrow(GuiGraphics context, int x, int y) {
-        if(menu.isCrafting()) {
-            context.blit(TEXTURE, x + 73, y + 34, 176, 12, menu.getScaledProgress(),45);
+        if(handler.isCrafting()) {
+            context.blit(TEXTURE, x + 73, y + 34, 176, 12, handler.getScaledProgress(),45);
         }
         /*if(handler.hasFuel()){
             drawTexture(matrices, x + 18, y + 33 + 14 - handler.getScaledFuelProgress(), 176,
@@ -52,7 +52,7 @@ public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScre
     public void render(GuiGraphics context , int mouseX, int mouseY, float delta) {
         renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
-        renderTooltip(context, mouseX, mouseY);
+        drawMouseoverTooltip(context, mouseX, mouseY);
     }
 }
 

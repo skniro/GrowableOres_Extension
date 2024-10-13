@@ -10,9 +10,9 @@ import net.minecraft.world.item.crafting.RecipeType;
 
 public interface AlchemyRecipeType<T extends Recipe<?>> {
     public static final RecipeSerializer<AlchemyCraftingRecipe> Cane_Converter_SERIALIZER = Registry.register(
-            BuiltInRegistries.RECIPE_SERIALIZER, ResourceLocation.fromNamespaceAndPath(GrowableOresExtension.MOD_ID, "cane_converter"), new AlchemyCraftingRecipe.Serializer());
+            BuiltInRegistries.RECIPE_SERIALIZER, ResourceLocation.tryBuild(GrowableOresExtension.MOD_ID, "cane_converter"), new AlchemyCraftingRecipe.Serializer());
     public static final RecipeType<AlchemyCraftingRecipe> Cane_Converter_TYPE = Registry.register(
-            BuiltInRegistries.RECIPE_TYPE, ResourceLocation.fromNamespaceAndPath(GrowableOresExtension.MOD_ID, "cane_converter"), new RecipeType<>() {
+            BuiltInRegistries.RECIPE_TYPE, ResourceLocation.tryBuild(GrowableOresExtension.MOD_ID, "cane_converter"), new RecipeType<>() {
                 @Override
                 public String toString() {
                     return "cane_converter";

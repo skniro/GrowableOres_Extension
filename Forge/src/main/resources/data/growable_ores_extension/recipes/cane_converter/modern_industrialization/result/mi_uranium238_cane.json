@@ -1,0 +1,24 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:all_mods_loaded",
+      "values": [
+        "modern_industrialization"
+      ]
+    }
+  ],
+  "type": "growable_ores_extension:cane_converter",
+  "pattern": [
+    "## ",
+    "## ",
+    "   "
+  ],
+  "ingredient": [ {
+      "item": "growable_ores:mi_uranium_cane"
+  }
+  ],
+    "result": {
+        "item": "modern_industrialization:uranium_238_ingot",
+    "count": 1
+  }
+}

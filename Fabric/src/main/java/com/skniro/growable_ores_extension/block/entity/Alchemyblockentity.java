@@ -2,7 +2,6 @@ package com.skniro.growable_ores_extension.block.entity;
 import java.util.Optional;
 
 import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipe;
-import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
 import com.skniro.growable_ores_extension.screen.AlchemyBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
@@ -11,8 +10,10 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
+import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
@@ -27,7 +28,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory {
+public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
     private float rotation = 0;
     private static final int FLUID_ITEM_SLOT = 0;
@@ -77,8 +78,8 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     }
 
     @Override
-    public BlockPos getScreenOpeningData(ServerPlayerEntity player) {
-        return this.pos;
+    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+        buf.writeBlockPos(this.pos);
     }
 
     @Override
@@ -98,19 +99,19 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        super.writeNbt(nbt, registryLookup);
-        Inventories.writeNbt(nbt, inventory, registryLookup);
+    protected void writeNbt(NbtCompound nbt) {
+        super.writeNbt(nbt);
+        Inventories.writeNbt(nbt, inventory);
         nbt.putInt("cane_converter.progress", progress);
         nbt.putInt("cane_converter.max_progress", maxProgress);
     }
 
     @Override
-    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        Inventories.readNbt(nbt, inventory, registryLookup);
+    public void readNbt(NbtCompound nbt) {
+        Inventories.readNbt(nbt, inventory);
         progress = nbt.getInt("cane_converter.progress");
         maxProgress = nbt.getInt("cane_converter.max_progress");
-        super.readNbt(nbt, registryLookup);
+        super.readNbt(nbt);
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
@@ -138,8 +139,8 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     private void craftItem() {
         Optional<RecipeEntry<AlchemyCraftingRecipe>> recipe = getCurrentRecipe();
         this.removeStack(INPUT_SLOT, 1);
-        this.setStack(OUTPUT_SLOT, new ItemStack(recipe.get().value().output().getItem(),
-                this.getStack(OUTPUT_SLOT).getCount() + recipe.get().value().output().getCount()));
+        this.setStack(OUTPUT_SLOT, new ItemStack(recipe.get().value().getResult(null).getItem(),
+                this.getStack(OUTPUT_SLOT).getCount() + recipe.get().value().getResult(null).getCount()));
     }
 
     private boolean hasCraftingFinished() {
@@ -162,11 +163,16 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
         }
 
         ItemStack output = recipe.get().value().getResult(null);
-        return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
+        return recipe.isPresent() && canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
+
     private Optional<RecipeEntry<AlchemyCraftingRecipe>> getCurrentRecipe() {
+        SimpleInventory inv = new SimpleInventory(this.size());
+        for(int i = 0; i < this.size(); i++) {
+            inv.setStack(i, this.getStack(i));
+        }
         return this.getWorld().getRecipeManager()
-                .getFirstMatch(AlchemyRecipeType.Cane_Converter_TYPE, new AlchemyCraftingRecipeInput(inventory.get(INPUT_SLOT)), this.getWorld());
+                .getFirstMatch(AlchemyRecipeType.Cane_Converter_TYPE, inv, this.getWorld());
     }
 
     private boolean canInsertItemIntoOutputSlot(ItemStack output) {
@@ -188,7 +194,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
 
 
     @Override
-    public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
-        return createNbt(registryLookup);
+    public NbtCompound toInitialChunkDataNbt() {
+        return createNbt();
     }
 }
