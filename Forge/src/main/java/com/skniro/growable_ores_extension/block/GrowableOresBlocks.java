@@ -2,13 +2,12 @@ package com.skniro.growable_ores_extension.block;
 
 import com.skniro.growable_ores_extension.GrowableOresExtension;
 import com.skniro.growable_ores_extension.item.MapleItems;
-import com.skniro.growable_ores_extension.item.ModCreativeModeTabs;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -20,7 +19,7 @@ public class GrowableOresBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, GrowableOresExtension.MODID);
 
     public static final RegistryObject<Block> GrowableOres_Block =registerBlock("growableores_block",
-            () -> new Alchemyblock(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F)));
+            () -> new Alchemyblock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)), CreativeModeTab.TAB_INVENTORY);
 
 
 
@@ -29,15 +28,15 @@ public class GrowableOresBlocks {
         return toReturn;
     }
 
-    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
+    private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab creativeModeTab) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
-        registerBlockItem(name, toReturn);
+        registerBlockItem(name, toReturn, creativeModeTab);
         return toReturn;
     }
 
-    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block) {
+    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block, CreativeModeTab creativeModeTab) {
         return MapleItems.ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties()));
+                new Item.Properties().tab(creativeModeTab)));
     }
 
     public static void registerBlocks(IEventBus eventBus) {

@@ -14,6 +14,5 @@ public class GrowableOresExtension implements ModInitializer {
     public void onInitialize() {
         ModContent.registerItem();
         ModContent.registerBlock();
-        ModContent.CreativeTab();
     }
 }

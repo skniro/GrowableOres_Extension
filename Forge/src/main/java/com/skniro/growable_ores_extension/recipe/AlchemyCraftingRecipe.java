@@ -44,7 +44,7 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleContainer> {
 
 
     @Override
-    public ItemStack assemble(SimpleContainer inventory, RegistryAccess registryManager) {
+    public ItemStack assemble(SimpleContainer inventory) {
         return output.copy();
     }
 
@@ -54,7 +54,7 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleContainer> {
     }
 
     @Override
-    public ItemStack getResultItem(RegistryAccess registryManager) {
+    public ItemStack getResultItem() {
         return output;
     }
 
@@ -113,7 +113,7 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleContainer> {
                 ingredient.toNetwork(buf);
             }
 
-            buf.writeItem(recipe.getResultItem(null));
+            buf.writeItem(recipe.getResultItem());
         }
     }
 }

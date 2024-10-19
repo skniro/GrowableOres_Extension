@@ -22,7 +22,7 @@ public class AlchemyBlockScreenHandler extends AbstractContainerMenu {
     public final Alchemyblockentity blockEntity;
 
     public AlchemyBlockScreenHandler(int syncId, Inventory playerInventory, FriendlyByteBuf extraData){
-        this(syncId,playerInventory, playerInventory.player.level().getBlockEntity(extraData.readBlockPos()),new SimpleContainerData(2));
+        this(syncId,playerInventory, playerInventory.player.getLevel().getBlockEntity(extraData.readBlockPos()),new SimpleContainerData(2));
     }
 
 
@@ -33,7 +33,7 @@ public class AlchemyBlockScreenHandler extends AbstractContainerMenu {
         inventory.startOpen(playerInventory.player);
         this.propertyDelegate = delegate;
         this.blockEntity = (Alchemyblockentity) blockEntity;
-        this.level = playerInventory.player.level();
+        this.level = playerInventory.player.getLevel();;
         this.addSlot(new Slot(inventory, 1, 52, 34));
         this.addSlot(new Slot(inventory, 2, 100, 34));
 
@@ -82,7 +82,7 @@ public class AlchemyBlockScreenHandler extends AbstractContainerMenu {
             }
 
             if (originalStack.isEmpty()) {
-                slot.setByPlayer(ItemStack.EMPTY);
+                slot.set(ItemStack.EMPTY);
             } else {
                 slot.setChanged();
             }

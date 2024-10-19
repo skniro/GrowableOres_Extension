@@ -21,7 +21,6 @@
   "environment": "*",
   "entrypoints": {
     "fabric-datagen": [
-      "com.skniro.growable_ores_extension.datagen.GrowableOresDataGeneration"
     ],
     "client": [
       "com.skniro.growable_ores_extension.client.GrowableOresClient"
@@ -36,7 +35,7 @@
   "depends": {
     "fabricloader": ">=0.15.11",
     "fabric": "*",
-    "minecraft": ["1.20", "1.20.1", "1.20.2"],
+    "minecraft": ["1.19", "1.19.1", "1.19.2"],
     "growable_ores": "*"
   }
 }

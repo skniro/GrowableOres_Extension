@@ -2,7 +2,6 @@ package com.skniro.growable_ores_extension.block.renderer;
 
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
 import com.skniro.growable_ores_extension.block.entity.Alchemyblockentity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.LightTexture;
@@ -12,7 +11,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
@@ -27,9 +25,9 @@ public class AlchemyblockentityRenderer implements BlockEntityRenderer<Alchemybl
         matrices.pushPose();
         matrices.translate(0.5f, 1.01f, 0.5f);
         matrices.scale(0.35f, 0.35f, 0.35f);
-        matrices.mulPose(Axis.XP.rotationDegrees(270));
-        itemRenderer.renderStatic(stack, ItemDisplayContext.GUI, getLightLevel(entity.getLevel(),
-                entity.getBlockPos()), OverlayTexture.NO_OVERLAY, matrices, vertexConsumers, entity.getLevel(), 1);
+       // matrices.mulPose(Axis.XP.rotationDegrees(270));
+       // itemRenderer.renderStatic(stack, ItemDisplayContext.GUI, getLightLevel(entity.getLevel(),
+       //         entity.getBlockPos()), OverlayTexture.NO_OVERLAY, matrices, vertexConsumers, entity.getLevel(), 1);
         matrices.popPose();
     }
     private int getLightLevel(Level world, BlockPos pos) {

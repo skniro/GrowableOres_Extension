@@ -1,9 +1,9 @@
 package com.skniro.growable_ores_extension.client.gui.screen.ingame;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.skniro.growable_ores_extension.GrowableOresExtension;
 import com.skniro.growable_ores_extension.screen.AlchemyBlockScreenHandler;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.network.chat.Component;
@@ -27,20 +27,20 @@ public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScre
     }
 
     @Override
-    protected void renderBg(GuiGraphics context, float delta, int mouseX, int mouseY) {
+    protected void renderBg(PoseStack context, float delta, int mouseX, int mouseY) {
         RenderSystem.setShader(GameRenderer::getPositionShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - imageWidth) / 2;
         int y = (height - imageHeight) / 2;
-        context.blit(TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
+        blit(context, x, y, 0, 0, imageWidth, imageHeight);
 
         renderProgressArrow(context, x, y);
     }
 
-    private void renderProgressArrow(GuiGraphics context, int x, int y) {
+    private void renderProgressArrow(PoseStack context, int x, int y) {
         if(menu.isCrafting()) {
-            context.blit(TEXTURE, x + 73, y + 34, 176, 12, menu.getScaledProgress(),45);
+            blit(context, x + 73, y + 34, 176, 12, menu.getScaledProgress(),45);
         }
         /*if(handler.hasFuel()){
             drawTexture(matrices, x + 18, y + 33 + 14 - handler.getScaledFuelProgress(), 176,
@@ -49,7 +49,7 @@ public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScre
     }
 
     @Override
-    public void render(GuiGraphics context , int mouseX, int mouseY, float delta) {
+    public void render(PoseStack context , int mouseX, int mouseY, float delta) {
         renderBackground(context);
         super.render(context, mouseX, mouseY, delta);
         renderTooltip(context, mouseX, mouseY);

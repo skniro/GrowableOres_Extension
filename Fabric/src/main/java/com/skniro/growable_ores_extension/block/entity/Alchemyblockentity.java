@@ -12,9 +12,9 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.network.listener.ClientPlayPacketListener;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
@@ -138,8 +138,8 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     private void craftItem() {
         Optional<AlchemyCraftingRecipe> recipe = getCurrentRecipe();
         this.removeStack(INPUT_SLOT, 1);
-        this.setStack(OUTPUT_SLOT, new ItemStack(recipe.get().getOutput(null).getItem(),
-                this.getStack(OUTPUT_SLOT).getCount() + recipe.get().getOutput(null).getCount()));
+        this.setStack(OUTPUT_SLOT, new ItemStack(recipe.get().getOutput().getItem(),
+                this.getStack(OUTPUT_SLOT).getCount() + recipe.get().getOutput().getCount()));
     }
 
     private boolean hasCraftingFinished() {
@@ -161,7 +161,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
             return false;
         }
 
-        ItemStack output = recipe.get().getOutput(null);
+        ItemStack output = recipe.get().getOutput();
         return recipe.isPresent() && canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
 

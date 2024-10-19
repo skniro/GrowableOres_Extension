@@ -1,9 +1,6 @@
 package com.skniro.growable_ores_extension.recipe;
 
 import com.skniro.growable_ores_extension.GrowableOresExtension;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;

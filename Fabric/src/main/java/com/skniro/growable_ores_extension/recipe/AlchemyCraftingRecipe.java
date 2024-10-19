@@ -3,20 +3,13 @@ package com.skniro.growable_ores_extension.recipe;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mojang.serialization.Codec;
-import com.mojang.serialization.DataResult;
-import com.mojang.serialization.MapCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.recipe.*;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.JsonHelper;
 import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.util.dynamic.Codecs;
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -42,7 +35,7 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleInventory> {
     }
 
     @Override
-    public ItemStack craft(SimpleInventory inventory, DynamicRegistryManager registryManager) {
+    public ItemStack craft(SimpleInventory inventory) {
         return output;
     }
 
@@ -52,7 +45,7 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleInventory> {
     }
 
     @Override
-    public ItemStack getOutput(DynamicRegistryManager registryManager) {
+    public ItemStack getOutput() {
         return output;
     }
 
@@ -116,7 +109,7 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleInventory> {
                 ingredient.write(buf);
             }
 
-            buf.writeItemStack(recipe.getOutput(null));
+            buf.writeItemStack(recipe.getOutput());
         }
     }
 }

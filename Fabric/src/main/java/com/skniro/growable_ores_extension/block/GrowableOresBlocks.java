@@ -1,30 +1,28 @@
 package com.skniro.growable_ores_extension.block;
 
 import com.skniro.growable_ores_extension.GrowableOresExtension;
-import com.skniro.growable_ores_extension.util.GrowableOresItemGroups;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
 public class GrowableOresBlocks {
-    public static final Block GrowableOres_Block =registerBlock("growableores_block",new Alchemyblock(AbstractBlock.Settings.create().requiresTool().strength(3.0F, 3.0F)), GrowableOresItemGroups.Growable_Ores_Group);
+    public static final Block GrowableOres_Block =registerBlock("growableores_block",new Alchemyblock(AbstractBlock.Settings.of(Material.STONE).requiresTool().strength(3.0F, 3.0F)), ItemGroup.INVENTORY);
 
     private static Block registerBlockWithoutItem(String name, Block block) {
-        return Registry.register(Registries.BLOCK, Identifier.of(GrowableOresExtension.MOD_ID, name), block);
+        return Registry.register(Registry.BLOCK, Identifier.of(GrowableOresExtension.MOD_ID, name), block);
     }
-    private static Block registerBlock(String name, Block block, RegistryKey<ItemGroup> tab) {
+    private static Block registerBlock(String name, Block block, ItemGroup tab) {
         registerBlockItem(name, block, tab);
-        return Registry.register(Registries.BLOCK, Identifier.of(GrowableOresExtension.MOD_ID, name), block);
+        return Registry.register(Registry.BLOCK, Identifier.of(GrowableOresExtension.MOD_ID, name), block);
     }
-    private static Item registerBlockItem(String name, Block block, RegistryKey<ItemGroup> tab) {
-        return Registry.register(Registries.ITEM, Identifier.of(GrowableOresExtension.MOD_ID, name),
-                new BlockItem(block, new Item.Settings()));
+    private static Item registerBlockItem(String name, Block block, ItemGroup tab) {
+        return Registry.register(Registry.ITEM, Identifier.of(GrowableOresExtension.MOD_ID, name),
+                new BlockItem(block, new Item.Settings().group(tab)));
     }
 
     public static void registerGrowableOresBlocks() {

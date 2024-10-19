@@ -5,9 +5,9 @@ import com.skniro.growable_ores_extension.GrowableOresExtension;
 import com.skniro.growable_ores_extension.screen.AlchemyBlockScreenHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -26,21 +26,22 @@ public class AlchemyBlockScreen extends HandledScreen<AlchemyBlockScreenHandler>
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
     }
 
+
     @Override
-    protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionProgram);
+    protected void drawBackground(MatrixStack context, float delta, int mouseX, int mouseY) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
-        context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        drawTexture(context, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
         renderProgressArrow(context, x, y);
     }
 
-    private void renderProgressArrow(DrawContext context, int x, int y) {
+    private void renderProgressArrow(MatrixStack context, int x, int y) {
         if(handler.isCrafting()) {
-            context.drawTexture(TEXTURE, x + 73, y + 34, 176, 12, handler.getScaledProgress(),45);
+            drawTexture(context, x + 73, y + 34, 176, 12, handler.getScaledProgress(),45);
         }
         /*if(handler.hasFuel()){
             drawTexture(matrices, x + 18, y + 33 + 14 - handler.getScaledFuelProgress(), 176,
@@ -49,7 +50,7 @@ public class AlchemyBlockScreen extends HandledScreen<AlchemyBlockScreenHandler>
     }
 
     @Override
-    public void render(DrawContext context , int mouseX, int mouseY, float delta) {
+    public void render(MatrixStack context , int mouseX, int mouseY, float delta) {
         renderBackground(context);
         super.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);

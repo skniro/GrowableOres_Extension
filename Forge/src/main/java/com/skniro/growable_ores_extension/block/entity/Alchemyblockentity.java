@@ -131,8 +131,8 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     private void craftItem() {
         Optional<AlchemyCraftingRecipe> recipe = getCurrentRecipe();
         this.removeItem(INPUT_SLOT, 1);
-        this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().getResultItem(null).getItem(),
-                this.getItem(OUTPUT_SLOT).getCount() + recipe.get().getResultItem(null).getCount()));
+        this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().getResultItem().getItem(),
+                this.getItem(OUTPUT_SLOT).getCount() + recipe.get().getResultItem().getCount()));
     }
 
     private boolean hasCraftingFinished() {
@@ -154,7 +154,7 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
             return false;
         }
 
-        ItemStack output = recipe.get().getResultItem(null);
+        ItemStack output = recipe.get().getResultItem();
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
     private Optional<AlchemyCraftingRecipe> getCurrentRecipe() {

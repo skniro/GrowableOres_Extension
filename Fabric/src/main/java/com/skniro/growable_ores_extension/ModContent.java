@@ -6,12 +6,10 @@ import com.skniro.growable_ores_extension.block.entity.AlchemyBlockEntityType;
 import com.skniro.growable_ores_extension.item.GrowableOresItems;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
 import com.skniro.growable_ores_extension.screen.AlchemyScreenHandlerType;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.item.ItemGroups;
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 
 
 public class ModContent {
-
 
     public static void registerItem(){
         GrowableOresItems.shield_item();
@@ -21,11 +19,5 @@ public class ModContent {
         AlchemyRecipeType.registerRecipes();
         AlchemyBlockEntityType.registerMapleBlockEntityType();
         AlchemyScreenHandlerType.registeralchemyscreenhandlertype();
-    }
-    public static void CreativeTab() {
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(content -> {
-            content.add(GrowableOresBlocks.GrowableOres_Block);
-
-        });
     }
 }

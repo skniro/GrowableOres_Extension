@@ -3,23 +3,15 @@ package com.skniro.growable_ores_extension;
 import com.mojang.logging.LogUtils;
 import com.skniro.growable_ores_extension.block.GrowableOresBlocks;
 import com.skniro.growable_ores_extension.block.entity.AlchemyBlockEntityType;
-import com.skniro.growable_ores_extension.block.renderer.AlchemyblockentityRenderer;
 import com.skniro.growable_ores_extension.client.gui.screen.ingame.AlchemyBlockScreen;
 import com.skniro.growable_ores_extension.item.MapleItems;
 import com.skniro.growable_ores_extension.item.ModCreativeModeTabs;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
 import com.skniro.growable_ores_extension.screen.AlchemyScreenHandlerType;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.Sheets;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -52,16 +44,8 @@ public class GrowableOresExtension {
         AlchemyScreenHandlerType.registeralchemyscreenhandlertype(modEventBus);
         GrowableOresBlocks.registerBlocks(modEventBus);
         MapleItems.registerModItems(modEventBus);
-        ModCreativeModeTabs.register(modEventBus);
-        modEventBus.addListener(this::addCreative);
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
-    }
-
-    public void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.FUNCTIONAL_BLOCKS) {
-            event.accept(GrowableOresBlocks.GrowableOres_Block);
-        }
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -80,7 +64,7 @@ public class GrowableOresExtension {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             MenuScreens.register(AlchemyScreenHandlerType.ALCHEMY.get(), AlchemyBlockScreen::new);
-            BlockEntityRenderers.register(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY.get(), AlchemyblockentityRenderer::new);
+            //BlockEntityRenderers.register(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY.get(), AlchemyblockentityRenderer::new);
         }
     }
 
