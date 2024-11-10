@@ -7,66 +7,102 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.RegistryByteBuf;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.recipe.*;
+import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.registry.RegistryWrapper;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 
+public class AlchemyCraftingRecipe implements Recipe<AlchemyCraftingRecipeInput> {
+    final ItemStack output;
+    final Ingredient ingredient;
+    @Nullable
+    private IngredientPlacement ingredientPlacement;
 
-    public record AlchemyCraftingRecipe(Ingredient inputItem, ItemStack output) implements Recipe<AlchemyCraftingRecipeInput> {
-        @Override
-        public DefaultedList<Ingredient> getIngredients() {
-            DefaultedList<Ingredient> list = DefaultedList.of();
-            list.add(this.inputItem);
-            return list;
+
+    public AlchemyCraftingRecipe(Ingredient ingredients, ItemStack output) {
+        this.output = output;
+        this.ingredient = ingredients;
+    }
+
+    public Ingredient ingredient() {
+        return this.ingredient;
+    }
+
+    public ItemStack output() {
+        return this.output;
+    }
+
+    @Override
+    public boolean matches(AlchemyCraftingRecipeInput input, World world) {
+        if (world.isClient()) {
+            return false;
         }
-        @Override
-        public boolean matches(AlchemyCraftingRecipeInput input, World world) {
-            if(world.isClient()) {
-                return false;
-            }
-            return inputItem.test(input.getStackInSlot(1));
+        return this.ingredient.test(input.getStackInSlot(1));
+    }
+
+    @Override
+    public ItemStack craft(AlchemyCraftingRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
+        return output.copy();
+    }
+
+    @Override
+    public RecipeSerializer<? extends Recipe<AlchemyCraftingRecipeInput>> getSerializer() {
+        return AlchemyRecipeType.Cane_Converter_SERIALIZER;
+    }
+
+    @Override
+    public RecipeType<? extends Recipe<AlchemyCraftingRecipeInput>> getType() {
+        return AlchemyRecipeType.Cane_Converter_TYPE;
+    }
+
+    @Override
+    public IngredientPlacement getIngredientPlacement() {
+        if (this.ingredientPlacement == null) {
+            this.ingredientPlacement = IngredientPlacement.forSingleSlot(this.ingredient);
         }
-        @Override
-        public ItemStack craft(AlchemyCraftingRecipeInput input, RegistryWrapper.WrapperLookup lookup) {
-            return output.copy();
+
+        return this.ingredientPlacement;
+    }
+
+    @Override
+    public RecipeBookCategory getRecipeBookCategory() {
+        return null;
+    }
+
+    public static class Serializer implements RecipeSerializer<AlchemyCraftingRecipe> {
+        public static final MapCodec<AlchemyCraftingRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+                Ingredient.CODEC.fieldOf("ingredient").forGetter((recipe) -> {
+                    return recipe.ingredient;
+                }),
+                ItemStack.CODEC.fieldOf("result").forGetter((recipe) -> {
+                    return recipe.output;
+                })
+        ).apply(inst, AlchemyCraftingRecipe::new));
+
+        public static final PacketCodec<RegistryByteBuf, AlchemyCraftingRecipe> STREAM_CODEC =
+                PacketCodec.tuple(
+                        Ingredient.PACKET_CODEC, AlchemyCraftingRecipe::ingredient,
+                        ItemStack.PACKET_CODEC, AlchemyCraftingRecipe::output,
+                        AlchemyCraftingRecipe::new);
+
+        public Serializer() {
         }
-        @Override
-        public boolean fits(int width, int height) {
-            return true;
+
+        public MapCodec<AlchemyCraftingRecipe> codec() {
+            return CODEC;
         }
-        @Override
-        public ItemStack getResult(RegistryWrapper.WrapperLookup registriesLookup) {
-            return output;
-        }
-        @Override
-        public RecipeSerializer<?> getSerializer() {
-            return AlchemyRecipeType.Cane_Converter_SERIALIZER;
-        }
-        @Override
-        public RecipeType<?> getType() {
-            return AlchemyRecipeType.Cane_Converter_TYPE;
-        }
-        public static class Serializer implements RecipeSerializer<AlchemyCraftingRecipe> {
-            public static final MapCodec<AlchemyCraftingRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-                    Ingredient.DISALLOW_EMPTY_CODEC.fieldOf("ingredient").forGetter(AlchemyCraftingRecipe::inputItem),
-                    ItemStack.CODEC.fieldOf("result").forGetter(AlchemyCraftingRecipe::output)
-            ).apply(inst, AlchemyCraftingRecipe::new));
-            public static final PacketCodec<RegistryByteBuf, AlchemyCraftingRecipe> STREAM_CODEC =
-                    PacketCodec.tuple(
-                            Ingredient.PACKET_CODEC, AlchemyCraftingRecipe::inputItem,
-                            ItemStack.PACKET_CODEC, AlchemyCraftingRecipe::output,
-                            AlchemyCraftingRecipe::new);
-            @Override
-            public MapCodec<AlchemyCraftingRecipe> codec() {
-                return CODEC;
-            }
-            @Override
-            public PacketCodec<RegistryByteBuf, AlchemyCraftingRecipe> packetCodec() {
-                return STREAM_CODEC;
-            }
+
+        public PacketCodec<RegistryByteBuf, AlchemyCraftingRecipe> packetCodec() {
+            return STREAM_CODEC;
         }
     }
+}
+
+
+
+
+
 
 
 

@@ -17,8 +17,8 @@ public class AlchemyBlockEntityType {
 
 
     public static final Supplier<BlockEntityType<Alchemyblockentity>> ALCHEMY_BLOCK_ENTITY =
-            BLOCK_ENTITIES.register("alchemy_block", () -> BlockEntityType.Builder.of(
-                    Alchemyblockentity::new, GrowableOresBlocks.GrowableOres_Block.get()).build(null));
+            BLOCK_ENTITIES.register("alchemy_block", () -> new BlockEntityType<>(
+                    Alchemyblockentity::new, GrowableOresBlocks.GrowableOres_Block.get()));
 
     public static void registerBlockEntityType(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

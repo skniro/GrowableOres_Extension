@@ -155,11 +155,12 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
             return false;
         }
 
-        ItemStack output = recipe.get().value().getResultItem(null);
+        ItemStack output = recipe.get().value().output();
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
+
     private Optional<RecipeHolder<AlchemyCraftingRecipe>> getCurrentRecipe() {
-        return this.getLevel().getRecipeManager()
+        return this.getLevel().getServer().getRecipeManager()
                 .getRecipeFor(AlchemyRecipeType.Cane_Converter_TYPE.get(), new AlchemyCraftingRecipeInput(inventory.get(INPUT_SLOT)), this.getLevel());
     }
 

@@ -18,7 +18,7 @@ public class GrowableOresClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         HandledScreens.register(AlchemyScreenHandlerType.ALCHEMY, AlchemyBlockScreen::new);
-        BlockEntityRendererFactories.register(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY, AlchemyblockentityRenderer::new);
+        //BlockEntityRendererFactories.register(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY, AlchemyblockentityRenderer::new);
         //BlockRenderLayerMap.INSTANCE.putBlock(GrowableOresBlocks.GrowableOres_Block, RenderLayer.getCutout());
     }
 }

@@ -3,6 +3,7 @@ package com.skniro.growable_ores_extension.block.entity;
 import com.mojang.datafixers.types.Type;
 import com.skniro.growable_ores_extension.GrowableOresExtension;
 import com.skniro.growable_ores_extension.block.GrowableOresBlocks;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.datafixer.TypeReferences;
@@ -16,11 +17,11 @@ public class AlchemyBlockEntityType {
     public static final BlockEntityType<Alchemyblockentity> ALCHEMY_BLOCK_ENTITY;
 
     static {
-        ALCHEMY_BLOCK_ENTITY = create("alchemy_block", BlockEntityType.Builder.create(Alchemyblockentity::new, GrowableOresBlocks.GrowableOres_Block));
+        ALCHEMY_BLOCK_ENTITY = create("alchemy_block", FabricBlockEntityTypeBuilder.create(Alchemyblockentity::new, GrowableOresBlocks.GrowableOres_Block));
 
     }
 
-    private static <T extends BlockEntity> BlockEntityType<T> create(String id, BlockEntityType.Builder<T> builder) {
+    private static <T extends BlockEntity> BlockEntityType create(String id, FabricBlockEntityTypeBuilder<T> builder) {
         Type<?> type = Util.getChoiceType(TypeReferences.BLOCK_ENTITY, id);
         return (BlockEntityType) Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(GrowableOresExtension.MOD_ID,id), builder.build(null));
     }

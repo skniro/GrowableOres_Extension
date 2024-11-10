@@ -3,13 +3,20 @@ package com.skniro.growable_ores_extension.recipe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.input.RecipeInput;
 
-public record AlchemyCraftingRecipeInput(ItemStack input) implements RecipeInput {
+public class AlchemyCraftingRecipeInput implements RecipeInput {
+    private final ItemStack input;
+
+    public AlchemyCraftingRecipeInput(ItemStack input) {
+        this.input = input;
+    }
+
     @Override
     public ItemStack getStackInSlot(int slot) {
         return input;
     }
+
     @Override
-    public int getSize() {
+    public int size() {
         return 1;
     }
 }

@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.skniro.growable_ores_extension.block.entity.AlchemyBlockEntityType;
 import com.skniro.growable_ores_extension.block.entity.Alchemyblockentity;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
@@ -24,7 +25,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -35,7 +36,7 @@ public class Alchemyblock extends BaseEntityBlock {
         super(settings);
     }
     public static final MapCodec<Alchemyblock> CODEC = simpleCodec(Alchemyblock::new);
-    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+    public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     @Override
     protected MapCodec<? extends BaseEntityBlock> codec() {
@@ -87,7 +88,7 @@ public class Alchemyblock extends BaseEntityBlock {
     }
 
     @Override
-    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (!world.isClientSide) {
             MenuProvider screenHandlerFactory = state.getMenuProvider(world, pos);
             BlockEntity entity = world.getBlockEntity(pos);
@@ -96,7 +97,7 @@ public class Alchemyblock extends BaseEntityBlock {
             }
         }
 
-        return ItemInteractionResult.sidedSuccess(world.isClientSide());
+        return InteractionResult.SUCCESS;
     }
 
     @Nullable
@@ -104,7 +105,6 @@ public class Alchemyblock extends BaseEntityBlock {
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new Alchemyblockentity(pos,state);
     }
-
 
     @Nullable
     @Override

@@ -130,6 +130,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
         }
     }
 
+
     private void resetProgress() {
         this.progress = 0;
         this.maxProgress = DEFAULT_MAX_PROGRESS;
@@ -161,11 +162,11 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
             return false;
         }
 
-        ItemStack output = recipe.get().value().getResultItem(null);
+        ItemStack output = recipe.get().value().output();
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
     private Optional<RecipeHolder<AlchemyCraftingRecipe>> getCurrentRecipe() {
-        return this.getLevel().getRecipeManager()
+        return this.getLevel().getServer().getRecipeManager()
                 .getRecipeFor(AlchemyRecipeType.Cane_Converter_TYPE, new AlchemyCraftingRecipeInput(inventory.get(INPUT_SLOT)), this.getLevel());
     }
 

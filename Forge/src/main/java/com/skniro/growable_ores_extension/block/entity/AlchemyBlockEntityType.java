@@ -15,6 +15,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
+import java.util.Set;
+import java.util.function.Supplier;
+
 
 public class AlchemyBlockEntityType {
 
@@ -23,8 +26,8 @@ public class AlchemyBlockEntityType {
 
 
     public static final RegistryObject<BlockEntityType<Alchemyblockentity>> ALCHEMY_BLOCK_ENTITY =
-            BLOCK_ENTITIES.register("alchemy_block", () -> BlockEntityType.Builder.of(
-                    Alchemyblockentity::new, GrowableOresBlocks.GrowableOres_Block.get()).build(null));
+            BLOCK_ENTITIES.register("alchemy_block", () -> new BlockEntityType<>(
+                    Alchemyblockentity::new, Set.of(GrowableOresBlocks.GrowableOres_Block.get())));
 
     public static void registerBlockEntityType(IEventBus eventBus) {
         BLOCK_ENTITIES.register(eventBus);

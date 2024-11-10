@@ -1,11 +1,8 @@
 {
-  "type": "growable_ores_extension:cane_converter",
-
-  "ingredient": {
-      "item": "growable_ores:feather_cane"
-  },
-  "result":  {
-    "id": "minecraft:feather",
-    "count": 2
-  }
+    "type": "growable_ores_extension:cane_converter",
+    "ingredient": "growable_ores:feather_cane",
+    "result": {
+        "id": "minecraft:feather",
+        "count": 2
+    }
 }

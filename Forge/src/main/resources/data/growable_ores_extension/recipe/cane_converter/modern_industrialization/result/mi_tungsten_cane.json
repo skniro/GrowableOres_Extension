@@ -1,19 +1,16 @@
 {
-  "fabric:load_conditions": [
-    {
-      "condition": "fabric:all_mods_loaded",
-      "values": [
-        "modern_industrialization"
-      ]
+    "fabric:load_conditions": [
+        {
+            "condition": "fabric:all_mods_loaded",
+            "values": [
+                "modern_industrialization"
+            ]
+        }
+    ],
+    "type": "growable_ores_extension:cane_converter",
+    "ingredient": "growable_ores:mi_tungsten_cane",
+    "result": {
+        "id": "modern_industrialization:tungsten_ingot",
+        "count": 1
     }
-  ],
-  "type": "growable_ores_extension:cane_converter",
-
-  "ingredient": {
-      "item": "growable_ores:mi_tungsten_cane"
-  },
-  "result":  {
-    "id": "modern_industrialization:tungsten_ingot",
-    "count": 1
-  }
 }
