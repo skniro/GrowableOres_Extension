@@ -142,6 +142,21 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
                 this.getItem(OUTPUT_SLOT).getCount() + recipe.get().value().output().getCount()));
     }
 
+    @Override
+    public int[] getSlotsForFace(Direction direction) {
+        if (direction == Direction.UP) {
+            return new int[]{INPUT_SLOT};
+        } else if (direction == Direction.DOWN) {
+            return new int[]{OUTPUT_SLOT};
+        }
+        return new int[0];
+    }
+
+    @Override
+    public boolean canPlaceItem(int slot, ItemStack stack) {
+        return slot != OUTPUT_SLOT;
+    }
+
     private boolean hasCraftingFinished() {
         return this.progress >= this.maxProgress;
     }

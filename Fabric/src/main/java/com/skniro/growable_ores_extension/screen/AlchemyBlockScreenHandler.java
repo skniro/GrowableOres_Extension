@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.slot.FurnaceOutputSlot;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.util.math.BlockPos;
 
@@ -31,7 +32,7 @@ public class AlchemyBlockScreenHandler extends ScreenHandler {
         this.propertyDelegate = delegate;
         this.blockEntity = (Alchemyblockentity) blockEntity;
         this.addSlot(new Slot(inventory, 1, 52, 34));
-        this.addSlot(new Slot(inventory, 2, 100, 34));
+        this.addSlot(new FurnaceOutputSlot(playerInventory.player, inventory, 2, 100, 34));
 
 
 
