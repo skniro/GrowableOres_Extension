@@ -5,6 +5,7 @@ import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipe;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
 import com.skniro.growable_ores_extension.screen.AlchemyBlockScreenHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -134,6 +135,21 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
         this.removeItem(INPUT_SLOT, 1);
         this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().value().getResultItem(null).getItem(),
                 this.getItem(OUTPUT_SLOT).getCount() + recipe.get().value().getResultItem(null).getCount()));
+    }
+
+    @Override
+    public int[] getSlotsForFace(Direction direction) {
+        if (direction == Direction.UP) {
+            return new int[]{INPUT_SLOT};
+        } else if (direction == Direction.DOWN) {
+            return new int[]{OUTPUT_SLOT};
+        }
+        return new int[0];
+    }
+
+    @Override
+    public boolean canPlaceItem(int slot, ItemStack stack) {
+        return slot != OUTPUT_SLOT;
     }
 
     private boolean hasCraftingFinished() {
