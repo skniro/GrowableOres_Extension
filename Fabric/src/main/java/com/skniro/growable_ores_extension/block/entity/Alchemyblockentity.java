@@ -12,6 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -24,6 +25,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -142,6 +144,21 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
                 this.getStack(OUTPUT_SLOT).getCount() + recipe.get().value().output().getCount()));
     }
 
+    @Override
+    public int[] getAvailableSlots(Direction direction) {
+        if (direction == Direction.UP) {
+            return new int[]{INPUT_SLOT};
+        } else if (direction == Direction.DOWN) {
+            return new int[]{OUTPUT_SLOT};
+        }
+        return new int[0];
+    }
+
+    @Override
+    public boolean isValid(int slot, ItemStack stack) {
+        return slot != OUTPUT_SLOT;
+    }
+
     private boolean hasCraftingFinished() {
         return this.progress >= this.maxProgress;
     }
@@ -164,6 +181,7 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
         ItemStack output = recipe.get().value().getResult(null);
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
+
     private Optional<RecipeEntry<AlchemyCraftingRecipe>> getCurrentRecipe() {
         return this.getWorld().getRecipeManager()
                 .getFirstMatch(AlchemyRecipeType.Cane_Converter_TYPE, new AlchemyCraftingRecipeInput(inventory.get(INPUT_SLOT)), this.getWorld());

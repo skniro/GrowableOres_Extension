@@ -6,10 +6,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.inventory.SimpleContainerData;
-import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
@@ -32,7 +29,7 @@ public class AlchemyBlockScreenHandler extends AbstractContainerMenu {
         this.propertyDelegate = delegate;
         this.blockEntity = (Alchemyblockentity) blockEntity;
         this.addSlot(new Slot(inventory, 1, 52, 34));
-        this.addSlot(new Slot(inventory, 2, 100, 34));
+        this.addSlot(new FurnaceResultSlot(playerInventory.player, inventory, 2, 100, 34));
 
 
 

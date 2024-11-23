@@ -1,6 +1,7 @@
 package com.skniro.growable_ores_extension.datagen;
 
 
+import com.skniro.growable_ores_extension.block.GrowableOresBlocks;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootTableProvider;
 import net.minecraft.registry.RegistryWrapper;
@@ -15,7 +16,7 @@ public class GrowableLootTableGenerator extends FabricBlockLootTableProvider {
 
     @Override
     public void generate() {
-
+         addDrop(GrowableOresBlocks.GrowableOres_Block, drops(GrowableOresBlocks.GrowableOres_Block));
 
     }
 }
