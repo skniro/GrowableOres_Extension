@@ -22,6 +22,7 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -140,6 +141,21 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
         this.removeStack(INPUT_SLOT, 1);
         this.setStack(OUTPUT_SLOT, new ItemStack(recipe.get().getOutput().getItem(),
                 this.getStack(OUTPUT_SLOT).getCount() + recipe.get().getOutput().getCount()));
+    }
+
+    @Override
+    public int[] getAvailableSlots(Direction direction) {
+        if (direction == Direction.UP) {
+            return new int[]{INPUT_SLOT};
+        } else if (direction == Direction.DOWN) {
+            return new int[]{OUTPUT_SLOT};
+        }
+        return new int[0];
+    }
+
+    @Override
+    public boolean isValid(int slot, ItemStack stack) {
+        return slot != OUTPUT_SLOT;
     }
 
     private boolean hasCraftingFinished() {
