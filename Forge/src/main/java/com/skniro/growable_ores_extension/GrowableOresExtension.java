@@ -3,12 +3,14 @@ package com.skniro.growable_ores_extension;
 import com.mojang.logging.LogUtils;
 import com.skniro.growable_ores_extension.block.GrowableOresBlocks;
 import com.skniro.growable_ores_extension.block.entity.AlchemyBlockEntityType;
+import com.skniro.growable_ores_extension.block.renderer.AlchemyblockentityRenderer;
 import com.skniro.growable_ores_extension.client.gui.screen.ingame.AlchemyBlockScreen;
 import com.skniro.growable_ores_extension.item.MapleItems;
 import com.skniro.growable_ores_extension.item.ModCreativeModeTabs;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
 import com.skniro.growable_ores_extension.screen.AlchemyScreenHandlerType;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
@@ -64,7 +66,7 @@ public class GrowableOresExtension {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             MenuScreens.register(AlchemyScreenHandlerType.ALCHEMY.get(), AlchemyBlockScreen::new);
-            //BlockEntityRenderers.register(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY.get(), AlchemyblockentityRenderer::new);
+            BlockEntityRenderers.register(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY.get(), AlchemyblockentityRenderer::new);
         }
     }
 
