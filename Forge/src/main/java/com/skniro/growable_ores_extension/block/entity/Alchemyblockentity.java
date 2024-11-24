@@ -139,12 +139,11 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
 
     @Override
     public int[] getSlotsForFace(Direction direction) {
-        if (direction == Direction.UP) {
+        if (direction != Direction.DOWN) {
             return new int[]{INPUT_SLOT};
-        } else if (direction == Direction.DOWN) {
+        } else {
             return new int[]{OUTPUT_SLOT};
         }
-        return new int[0];
     }
 
     @Override
