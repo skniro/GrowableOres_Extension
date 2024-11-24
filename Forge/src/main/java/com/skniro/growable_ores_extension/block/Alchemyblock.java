@@ -37,7 +37,7 @@ public class Alchemyblock extends BaseEntityBlock {
     }
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
-    private static VoxelShape SHAPE = Block.box(0, 0, 0, 16, 10, 16);
+    private static VoxelShape SHAPE = Block.box(0, 0, 0, 16, 16, 16);
 
     @Override
     public VoxelShape getShape(BlockState state, BlockGetter world, BlockPos pos, CollisionContext context) {
