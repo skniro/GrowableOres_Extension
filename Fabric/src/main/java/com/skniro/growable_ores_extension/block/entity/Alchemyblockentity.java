@@ -146,14 +146,12 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
 
     @Override
     public int[] getAvailableSlots(Direction direction) {
-        if (direction == Direction.UP) {
+        if (direction != Direction.DOWN) {
             return new int[]{INPUT_SLOT};
-        } else if (direction == Direction.DOWN) {
+        } else {
             return new int[]{OUTPUT_SLOT};
         }
-        return new int[0];
     }
-
     @Override
     public boolean isValid(int slot, ItemStack stack) {
         return slot != OUTPUT_SLOT;
