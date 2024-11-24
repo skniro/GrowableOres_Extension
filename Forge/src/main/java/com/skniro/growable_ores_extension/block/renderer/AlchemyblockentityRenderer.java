@@ -12,10 +12,15 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+
 public class AlchemyblockentityRenderer implements BlockEntityRenderer<Alchemyblockentity> {
     public AlchemyblockentityRenderer(BlockEntityRendererProvider.Context context) {
     }
@@ -24,10 +29,21 @@ public class AlchemyblockentityRenderer implements BlockEntityRenderer<Alchemybl
                        MultiBufferSource vertexConsumers, int light, int overlay) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack stack = entity.getRenderStack();
+        Direction direction = entity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
         matrices.pushPose();
-        matrices.translate(0.5f, 1.01f, 0.5f);
+        switch (direction) {
+            case NORTH -> matrices.translate(0.5f, 0.5f, -0.01f);
+            case SOUTH -> matrices.translate(0.5f, 0.5f, 1.01f);
+            case WEST -> matrices.translate(-0.01f, 0.5f, 0.5f);
+            case EAST -> matrices.translate(1.01f, 0.5f, 0.5f);
+        }
         matrices.scale(0.35f, 0.35f, 0.35f);
-        matrices.mulPose(Axis.XP.rotationDegrees(270));
+        switch (direction) {
+            case NORTH -> matrices.mulPose(Axis.YP.rotationDegrees(0));
+            case SOUTH -> matrices.mulPose(Axis.YP.rotationDegrees(180));
+            case WEST -> matrices.mulPose(Axis.YP.rotationDegrees(90));
+            case EAST -> matrices.mulPose(Axis.YP.rotationDegrees(270));
+        }
         itemRenderer.renderStatic(stack, ItemDisplayContext.GUI, getLightLevel(entity.getLevel(),
                 entity.getBlockPos()), OverlayTexture.NO_OVERLAY, matrices, vertexConsumers, entity.getLevel(), 1);
         matrices.popPose();
@@ -35,6 +51,6 @@ public class AlchemyblockentityRenderer implements BlockEntityRenderer<Alchemybl
     private int getLightLevel(Level world, BlockPos pos) {
         int bLight = world.getBrightness(LightLayer.BLOCK, pos);
         int sLight = world.getBrightness(LightLayer.SKY, pos);
-        return LightTexture.pack(bLight, sLight);
+        return LightTexture.pack(bLight, Math.max(sLight, 15));
     }
 }
