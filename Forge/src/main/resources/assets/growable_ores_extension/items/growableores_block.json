@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "growable_ores_extension:item/growableores_block"
+  }
+}
