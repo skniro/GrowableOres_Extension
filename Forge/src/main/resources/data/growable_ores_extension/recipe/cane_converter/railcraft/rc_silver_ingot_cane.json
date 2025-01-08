@@ -1,0 +1,30 @@
+{
+    "fabric:load_conditions": [
+        {
+            "condition": "fabric:all_mods_loaded",
+            "values": [
+                "railcraft"
+            ]
+        }
+    ],
+    "forge:conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "railcraft"
+        }
+    ],
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "railcraft"
+        }
+    ],
+    "type": "growable_ores_extension:cane_converter",
+    "ingredient": {
+        "item": "growable_ores:rc_silver_ingot_cane"
+    },
+    "result": {
+        "id": "railcraft:silver_ingot",
+        "count": 1
+    }
+}
