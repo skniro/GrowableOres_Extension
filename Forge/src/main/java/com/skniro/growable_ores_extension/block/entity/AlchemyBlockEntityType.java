@@ -12,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class AlchemyBlockEntityType {
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, GrowableOresExtension.MODID);
+            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, GrowableOresExtension.MODID);
 
 
     public static final RegistryObject<BlockEntityType<Alchemyblockentity>> ALCHEMY_BLOCK_ENTITY =

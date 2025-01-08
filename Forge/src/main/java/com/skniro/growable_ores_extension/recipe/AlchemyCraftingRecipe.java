@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.skniro.growable_ores_extension.GrowableOresExtension;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.FriendlyByteBuf;
@@ -16,6 +17,7 @@ import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.RegistryObject;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -77,11 +79,18 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleContainer> {
 
     @Override
     public RecipeType<?> getType() {
-        return AlchemyRecipeType.Cane_Converter_TYPE.get();
+        return Type.INSTANCE;
+    }
+
+    public static class Type implements RecipeType<AlchemyCraftingRecipe> {
+        private Type() { }
+        public static final Type INSTANCE = new Type();
+        public static final String ID = "cane_converter";
     }
 
     public static class Serializer implements RecipeSerializer<AlchemyCraftingRecipe> {
         public static final Serializer INSTANCE = new Serializer();
+        public static final ResourceLocation ID =  new ResourceLocation(GrowableOresExtension.MODID,"cane_converter");
         @Override
         public AlchemyCraftingRecipe fromJson(ResourceLocation resourceLocation, JsonObject jsonObject) {
             ItemStack output = ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(jsonObject, "result"));
@@ -114,6 +123,27 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleContainer> {
             }
 
             buf.writeItem(recipe.getResultItem());
+        }
+
+        @Override
+        public RecipeSerializer<?> setRegistryName(ResourceLocation name) {
+            return INSTANCE;
+        }
+
+        @Nullable
+        @Override
+        public ResourceLocation getRegistryName() {
+            return ID;
+        }
+
+        @Override
+        public Class<RecipeSerializer<?>> getRegistryType() {
+            return Serializer.castClass(RecipeSerializer.class);
+        }
+
+        @SuppressWarnings("unchecked") // Need this wrapper, because generics
+        private static <G> Class<G> castClass(Class<?> cls) {
+            return (Class<G>)cls;
         }
     }
 }

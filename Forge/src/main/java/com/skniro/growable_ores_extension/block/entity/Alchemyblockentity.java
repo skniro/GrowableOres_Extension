@@ -8,6 +8,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -82,7 +83,7 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("gui.growableores.cane_converter");
+        return new TranslatableComponent("gui.growableores.cane_converter");
     }
 
     @Nullable
@@ -178,7 +179,7 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
             inv.setItem(i, this.getItem(i));
         }
         return this.getLevel().getRecipeManager()
-                .getRecipeFor(AlchemyRecipeType.Cane_Converter_TYPE.get(), inv, this.getLevel());
+                .getRecipeFor(AlchemyCraftingRecipe.Type.INSTANCE, inv, this.getLevel());
     }
 
     private boolean canInsertItemIntoOutputSlot(ItemStack output) {

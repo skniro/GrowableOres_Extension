@@ -6,13 +6,11 @@ import com.skniro.growable_ores_extension.block.entity.AlchemyBlockEntityType;
 import com.skniro.growable_ores_extension.block.renderer.AlchemyblockentityRenderer;
 import com.skniro.growable_ores_extension.client.gui.screen.ingame.AlchemyBlockScreen;
 import com.skniro.growable_ores_extension.item.MapleItems;
-import com.skniro.growable_ores_extension.item.ModCreativeModeTabs;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
 import com.skniro.growable_ores_extension.screen.AlchemyScreenHandlerType;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -67,14 +65,6 @@ public class GrowableOresExtension {
         public static void onClientSetup(FMLClientSetupEvent event) {
             MenuScreens.register(AlchemyScreenHandlerType.ALCHEMY.get(), AlchemyBlockScreen::new);
             BlockEntityRenderers.register(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY.get(), AlchemyblockentityRenderer::new);
-        }
-    }
-
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-    public class ParticleFactoryRegistry {
-        @SubscribeEvent
-        public static void onParticleFactoryRegistration(RegisterParticleProvidersEvent event) {
-
         }
     }
 

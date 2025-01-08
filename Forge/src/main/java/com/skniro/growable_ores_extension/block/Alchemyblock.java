@@ -87,7 +87,7 @@ public class Alchemyblock extends BaseEntityBlock {
             MenuProvider screenHandlerFactory = state.getMenuProvider(world, pos);
             BlockEntity entity = world.getBlockEntity(pos);
             if (entity instanceof Alchemyblockentity alchemyblockentity) {
-                NetworkHooks.openScreen(((ServerPlayer)player), alchemyblockentity, pos);
+                NetworkHooks.openGui(((ServerPlayer)player), alchemyblockentity, pos);
             }
         }
 

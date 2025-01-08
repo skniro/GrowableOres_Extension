@@ -9,9 +9,9 @@ import net.minecraft.util.registry.Registry;
 
 public interface AlchemyRecipeType<T extends Recipe<?>> {
     public static final RecipeSerializer<AlchemyCraftingRecipe> Cane_Converter_SERIALIZER = Registry.register(
-            Registry.RECIPE_SERIALIZER, Identifier.of(GrowableOresExtension.MOD_ID, "cane_converter"), new AlchemyCraftingRecipe.Serializer());
+            Registry.RECIPE_SERIALIZER, new Identifier(GrowableOresExtension.MOD_ID, "cane_converter"), new AlchemyCraftingRecipe.Serializer());
     public static final RecipeType<AlchemyCraftingRecipe> Cane_Converter_TYPE = Registry.register(
-            Registry.RECIPE_TYPE, Identifier.of(GrowableOresExtension.MOD_ID, "cane_converter"), new RecipeType<>() {
+            Registry.RECIPE_TYPE, new Identifier(GrowableOresExtension.MOD_ID, "cane_converter"), new RecipeType<>() {
                 @Override
                 public String toString() {
                     return "cane_converter";

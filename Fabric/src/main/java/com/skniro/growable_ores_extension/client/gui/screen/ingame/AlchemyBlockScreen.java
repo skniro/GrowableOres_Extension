@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class AlchemyBlockScreen extends HandledScreen<AlchemyBlockScreenHandler> {
-    private static final Identifier TEXTURE = Identifier.of(GrowableOresExtension.MOD_ID, "textures/gui/container/cane_converter.png");
+    private static final Identifier TEXTURE = new Identifier(GrowableOresExtension.MOD_ID, "textures/gui/container/cane_converter.png");
 
     public AlchemyBlockScreen(AlchemyBlockScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);

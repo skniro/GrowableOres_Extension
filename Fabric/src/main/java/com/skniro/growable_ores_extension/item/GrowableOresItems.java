@@ -7,7 +7,7 @@ import net.minecraft.util.registry.Registry;
 
 public class GrowableOresItems {
     private static Item registerItem(String name, Item item) {
-        return Registry.register(Registry.ITEM, Identifier.of(GrowableOresExtension.MOD_ID, name), item);
+        return Registry.register(Registry.ITEM, new Identifier(GrowableOresExtension.MOD_ID, name), item);
     }
 
     public static void shield_item(){

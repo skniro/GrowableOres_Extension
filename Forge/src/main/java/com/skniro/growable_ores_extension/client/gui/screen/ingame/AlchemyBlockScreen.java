@@ -14,7 +14,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScreenHandler> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.tryBuild(GrowableOresExtension.MODID, "textures/gui/container/cane_converter.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(GrowableOresExtension.MODID, "textures/gui/container/cane_converter.png");
 
     public AlchemyBlockScreen(AlchemyBlockScreenHandler handler, Inventory inventory, Component title) {
         super(handler, inventory, title);

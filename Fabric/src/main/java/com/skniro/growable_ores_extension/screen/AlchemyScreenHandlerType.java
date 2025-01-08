@@ -9,7 +9,7 @@ import net.minecraft.util.registry.Registry;
 
 public class AlchemyScreenHandlerType <T extends ScreenHandler>{
     public static final ScreenHandlerType<AlchemyBlockScreenHandler> ALCHEMY =
-            Registry.register(Registry.SCREEN_HANDLER, Identifier.of(GrowableOresExtension.MOD_ID, "cane_converter_screen_handler"),
+            Registry.register(Registry.SCREEN_HANDLER, new Identifier(GrowableOresExtension.MOD_ID, "cane_converter_screen_handler"),
                     new ExtendedScreenHandlerType<>(AlchemyBlockScreenHandler::new));
 
     public static void registeralchemyscreenhandlertype () {
