@@ -11,7 +11,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class GrowableOresBlocks {
-    public static final Block GrowableOres_Block =registerBlock("growableores_block",new Alchemyblock(AbstractBlock.Settings.of(Material.STONE).requiresTool().strength(3.0F, 3.0F)), ItemGroup.INVENTORY);
+    public static final Block GrowableOres_Block =registerBlock("growableores_block",new Alchemyblock(AbstractBlock.Settings.of(Material.STONE).requiresTool().strength(3.0F, 3.0F)), ItemGroup.DECORATIONS);
 
     private static Block registerBlockWithoutItem(String name, Block block) {
         return Registry.register(Registry.BLOCK, Identifier.of(GrowableOresExtension.MOD_ID, name), block);

@@ -19,7 +19,7 @@ public class GrowableOresBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, GrowableOresExtension.MODID);
 
     public static final RegistryObject<Block> GrowableOres_Block =registerBlock("growableores_block",
-            () -> new Alchemyblock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)), CreativeModeTab.TAB_INVENTORY);
+            () -> new Alchemyblock(BlockBehaviour.Properties.of(Material.STONE).requiresCorrectToolForDrops().strength(3.0F, 3.0F)), CreativeModeTab.TAB_DECORATIONS);
 
 
 
