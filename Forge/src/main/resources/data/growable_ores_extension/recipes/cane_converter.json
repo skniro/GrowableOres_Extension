@@ -20,7 +20,7 @@
         }
     },
     "result": {
-        "id": "growable_ores_extension:growableores_block",
+        "item": "growable_ores_extension:growableores_block",
         "count": 1
     }
 }
