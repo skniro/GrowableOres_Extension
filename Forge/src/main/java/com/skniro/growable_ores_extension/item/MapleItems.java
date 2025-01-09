@@ -1,11 +1,11 @@
 package com.skniro.growable_ores_extension.item;
 
 import com.skniro.growable_ores_extension.GrowableOresExtension;
-import net.minecraft.world.item.*;
+import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.function.Supplier;
 

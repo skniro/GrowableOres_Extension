@@ -1,46 +1,47 @@
 package com.skniro.growable_ores_extension.client.gui.screen.ingame;
 
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.PoseStack;
 import com.skniro.growable_ores_extension.GrowableOresExtension;
 import com.skniro.growable_ores_extension.screen.AlchemyBlockScreenHandler;
-import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import static net.minecraft.client.gui.AbstractGui.blit;
+
 @OnlyIn(Dist.CLIENT)
-public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScreenHandler> {
+public class AlchemyBlockScreen extends ContainerScreen<AlchemyBlockScreenHandler> {
     private static final ResourceLocation TEXTURE = new ResourceLocation(GrowableOresExtension.MODID, "textures/gui/container/cane_converter.png");
 
-    public AlchemyBlockScreen(AlchemyBlockScreenHandler handler, Inventory inventory, Component title) {
+    public AlchemyBlockScreen(AlchemyBlockScreenHandler handler, PlayerInventory inventory, ITextComponent title) {
         super(handler, inventory, title);
     }
 
     @Override
     protected void init() {
         super.init();
-        titleLabelX = (imageWidth - font.width(title)) / 2;
     }
 
     @Override
-    protected void renderBg(PoseStack context, float delta, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - imageWidth) / 2;
-        int y = (height - imageHeight) / 2;
-        blit(context, x, y, 0, 0, imageWidth, imageHeight);
+    protected void drawGuiContainerBackgroundLayer(MatrixStack context, float delta, int mouseX, int mouseY) {
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.minecraft.getTextureManager().bindTexture(TEXTURE);
+        int x = (width - this.xSize) / 2;
+        int y = (height - this.ySize) / 2;
+        this.blit(context, x, y, 0, 0, this.xSize, this.ySize);
 
         renderProgressArrow(context, x, y);
     }
 
-    private void renderProgressArrow(PoseStack context, int x, int y) {
-        if(menu.isCrafting()) {
-            blit(context, x + 73, y + 34, 176, 12, menu.getScaledProgress(),45);
+    private void renderProgressArrow(MatrixStack context, int x, int y) {
+        if(container.isCrafting()) {
+            blit(context, x + 73, y + 34, 176, 12, container.getScaledProgress(),45);
         }
         /*if(handler.hasFuel()){
             drawTexture(matrices, x + 18, y + 33 + 14 - handler.getScaledFuelProgress(), 176,
@@ -49,10 +50,10 @@ public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScre
     }
 
     @Override
-    public void render(PoseStack context , int mouseX, int mouseY, float delta) {
+    public void render(MatrixStack context , int mouseX, int mouseY, float delta) {
         renderBackground(context);
         super.render(context, mouseX, mouseY, delta);
-        renderTooltip(context, mouseX, mouseY);
+        this.renderHoveredTooltip(context, mouseX, mouseY);
     }
 }
 

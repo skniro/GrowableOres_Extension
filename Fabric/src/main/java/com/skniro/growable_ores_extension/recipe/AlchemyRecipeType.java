@@ -11,7 +11,7 @@ public interface AlchemyRecipeType<T extends Recipe<?>> {
     public static final RecipeSerializer<AlchemyCraftingRecipe> Cane_Converter_SERIALIZER = Registry.register(
             Registry.RECIPE_SERIALIZER, new Identifier(GrowableOresExtension.MOD_ID, "cane_converter"), new AlchemyCraftingRecipe.Serializer());
     public static final RecipeType<AlchemyCraftingRecipe> Cane_Converter_TYPE = Registry.register(
-            Registry.RECIPE_TYPE, new Identifier(GrowableOresExtension.MOD_ID, "cane_converter"), new RecipeType<>() {
+            Registry.RECIPE_TYPE, new Identifier(GrowableOresExtension.MOD_ID, "cane_converter"), new RecipeType<AlchemyCraftingRecipe>() {
                 @Override
                 public String toString() {
                     return "cane_converter";

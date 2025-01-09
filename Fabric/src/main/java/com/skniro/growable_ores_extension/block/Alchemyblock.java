@@ -1,17 +1,14 @@
 package com.skniro.growable_ores_extension.block;
 
 
-import com.mojang.serialization.MapCodec;
 import com.skniro.growable_ores_extension.block.entity.AlchemyBlockEntityType;
 import com.skniro.growable_ores_extension.block.entity.Alchemyblockentity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemPlacementContext;
-import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
@@ -90,14 +87,7 @@ public class Alchemyblock extends BlockWithEntity {
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new Alchemyblockentity(pos,state);
-    }
-
-    @Nullable
-    @Override
-    public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY,
-                (world1, pos, state1, blockEntity) -> blockEntity.tick(world1, pos, state1));
+    public BlockEntity createBlockEntity(BlockView world) {
+        return new Alchemyblockentity();
     }
 }

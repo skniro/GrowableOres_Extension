@@ -29,9 +29,8 @@ public class AlchemyBlockScreen extends HandledScreen<AlchemyBlockScreenHandler>
 
     @Override
     protected void drawBackground(MatrixStack context, float delta, int mouseX, int mouseY) {
-        RenderSystem.setShader(GameRenderer::getPositionTexShader);
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
+        this.client.getTextureManager().bindTexture(TEXTURE);
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
         drawTexture(context, x, y, 0, 0, backgroundWidth, backgroundHeight);

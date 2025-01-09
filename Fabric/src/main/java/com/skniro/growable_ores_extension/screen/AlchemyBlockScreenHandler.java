@@ -21,7 +21,7 @@ public class AlchemyBlockScreenHandler extends ScreenHandler {
     public final Alchemyblockentity blockEntity;
 
     public AlchemyBlockScreenHandler(int syncId, PlayerInventory playerInventory, PacketByteBuf packetByteBuf){
-        this(syncId,playerInventory, playerInventory.player.getWorld().getBlockEntity(packetByteBuf.readBlockPos()),new ArrayPropertyDelegate(2));
+        this(syncId,playerInventory, playerInventory.player.world.getBlockEntity(packetByteBuf.readBlockPos()),new ArrayPropertyDelegate(2));
     }
 
 

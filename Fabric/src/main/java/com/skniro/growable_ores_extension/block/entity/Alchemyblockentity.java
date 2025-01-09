@@ -12,25 +12,24 @@ import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
 import net.minecraft.network.PacketByteBuf;
-import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Tickable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory {
+public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory, Tickable {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
     private float rotation = 0;
     private static final int FLUID_ITEM_SLOT = 0;
@@ -43,16 +42,19 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     private int maxProgress = 72;
     private final int DEFAULT_MAX_PROGRESS = 72;
 
-    public Alchemyblockentity(BlockPos pos, BlockState state) {
-        super(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY, pos, state);
+    public Alchemyblockentity() {
+        super(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY);
         this.propertyDelegate = new PropertyDelegate() {
             @Override
             public int get(int index) {
-                return switch (index) {
-                    case 0 -> Alchemyblockentity.this.progress;
-                    case 1 -> Alchemyblockentity.this.maxProgress;
-                    default -> 0;
-                };
+                switch (index) {
+                    case 0:
+                        return Alchemyblockentity.this.progress;
+                    case 1:
+                        return Alchemyblockentity.this.maxProgress;
+                    default:
+                        return 0;
+                }
             }
 
             @Override
@@ -101,28 +103,30 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt) {
+    public NbtCompound writeNbt(NbtCompound nbt) {
         super.writeNbt(nbt);
         Inventories.writeNbt(nbt, inventory);
         nbt.putInt("cane_converter.progress", progress);
         nbt.putInt("cane_converter.max_progress", maxProgress);
+        return nbt;
     }
 
     @Override
-    public void readNbt(NbtCompound nbt) {
+    public void fromTag(BlockState blockState,NbtCompound nbt) {
         Inventories.readNbt(nbt, inventory);
         progress = nbt.getInt("cane_converter.progress");
         maxProgress = nbt.getInt("cane_converter.max_progress");
-        super.readNbt(nbt);
+        super.fromTag(blockState, nbt);
     }
 
-    public void tick(World world, BlockPos pos, BlockState state) {
+    @Override
+    public void tick() {
         if(world.isClient()) {
             return;
         }
         if(hasRecipe() && canInsertIntoOutputSlot()) {
             increaseCraftingProgress();
-            markDirty(world, pos, state);
+            markDirty();
 
             if(hasCraftingFinished()) {
                 craftItem();
@@ -174,12 +178,13 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
 
     private boolean hasRecipe() {
         Optional<AlchemyCraftingRecipe> recipe = getCurrentRecipe();
-        if(recipe.isEmpty()) {
+        if (recipe.isPresent()) {
+            ItemStack output = recipe.get().getOutput();
+            return recipe.isPresent() && canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
+        } else {
             return false;
         }
 
-        ItemStack output = recipe.get().getOutput();
-        return recipe.isPresent() && canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
 
     private Optional<AlchemyCraftingRecipe> getCurrentRecipe() {
@@ -202,15 +207,14 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
         return maxCount >= currentCount + count;
 }
 
-   @Nullable
    @Override
-    public Packet<ClientPlayPacketListener> toUpdatePacket() {
-    return BlockEntityUpdateS2CPacket.create(this);
+    public BlockEntityUpdateS2CPacket toUpdatePacket() {
+    return new BlockEntityUpdateS2CPacket(this.pos, 1, this.writeNbt(new NbtCompound()));
 }
 
 
     @Override
     public NbtCompound toInitialChunkDataNbt() {
-        return createNbt();
+        return this.writeNbt(new NbtCompound());
     }
 }

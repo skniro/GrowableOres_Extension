@@ -1,33 +1,28 @@
 package com.skniro.growable_ores_extension.block.entity;
 
 import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipe;
-import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
 import com.skniro.growable_ores_extension.screen.AlchemyBlockScreenHandler;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.MenuProvider;
-import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ContainerData;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.block.BlockState;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventory;
+import net.minecraft.inventory.ItemStackHelper;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.INamedContainerProvider;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.tileentity.ITickableTileEntity;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Direction;
+import net.minecraft.util.IIntArray;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.TranslationTextComponent;
 
+import javax.annotation.Nullable;
 import java.util.Optional;
 
-public class Alchemyblockentity extends BlockEntity implements MenuProvider, ImplementedInventory {
+public class Alchemyblockentity extends TileEntity implements INamedContainerProvider, ImplementedInventory, ITickableTileEntity {
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(4, ItemStack.EMPTY);
     private float rotation = 0;
     private static final int FLUID_ITEM_SLOT = 0;
@@ -35,21 +30,24 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     private static final int OUTPUT_SLOT = 2;
     private static final int ENERGY_ITEM_SLOT = 3;
 
-    protected final ContainerData propertyDelegate;
+    protected final IIntArray propertyDelegate;
     private int progress = 0;
     private int maxProgress = 72;
     private final int DEFAULT_MAX_PROGRESS = 72;
 
-    public Alchemyblockentity(BlockPos pos, BlockState state) {
-        super(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY.get(), pos, state);
-        this.propertyDelegate = new ContainerData() {
+    public Alchemyblockentity() {
+        super(AlchemyBlockEntityType.ALCHEMY_BLOCK_ENTITY.get());
+        this.propertyDelegate = new IIntArray() {
             @Override
             public int get(int index) {
-                return switch (index) {
-                    case 0 -> Alchemyblockentity.this.progress;
-                    case 1 -> Alchemyblockentity.this.maxProgress;
-                    default -> 0;
-                };
+                switch (index) {
+                    case 0:
+                        return Alchemyblockentity.this.progress;
+                    case 1:
+                        return Alchemyblockentity.this.maxProgress;
+                    default:
+                        return 0;
+                }
             }
 
             @Override
@@ -61,19 +59,26 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
             }
 
             @Override
-            public int getCount() {
+            public int size() {
                 return 2;
             }
         };
     }
 
     public ItemStack getRenderStack() {
-            return this.getItem(INPUT_SLOT);
+            return this.getStackInSlot(INPUT_SLOT);
     }
+
+
     @Override
-    public void setChanged() {
-        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        super.setChanged();
+    public int getSizeInventory() {
+        return this.inventory.size();
+    }
+
+    @Override
+    public void markDirty() {
+        world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), 3);
+        super.markDirty();
     }
 
     @Override
@@ -82,39 +87,40 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     }
 
     @Override
-    public Component getDisplayName() {
-        return new TranslatableComponent("gui.growableores.cane_converter");
+    public TranslationTextComponent getDisplayName() {
+        return new TranslationTextComponent("gui.growableores.cane_converter");
     }
 
     @Nullable
     @Override
-    public AbstractContainerMenu createMenu(int syncId, Inventory playerInventory, Player player) {
+    public Container createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new AlchemyBlockScreenHandler(syncId, playerInventory, this, propertyDelegate);
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt) {
-        super.saveAdditional(nbt);
-        ContainerHelper.saveAllItems(nbt, inventory);
+    public CompoundNBT write(CompoundNBT nbt) {
+        super.write(nbt);
+        ItemStackHelper.saveAllItems(nbt, inventory);
         nbt.putInt("cane_converter.progress", progress);
         nbt.putInt("cane_converter.max_progress", maxProgress);
+        return nbt;
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        ContainerHelper.loadAllItems(nbt, inventory);
+    public void read(BlockState state, CompoundNBT nbt) {
+        ItemStackHelper.loadAllItems(nbt, inventory);
         progress = nbt.getInt("cane_converter.progress");
         maxProgress = nbt.getInt("cane_converter.max_progress");
-        super.load(nbt);
+        super.read(state ,nbt);
     }
 
-    public void tick(Level world, BlockPos pos, BlockState state) {
-        if(world.isClientSide()) {
+    public void tick() {
+        if(world.isRemote()) {
             return;
         }
         if(hasRecipe() && canInsertIntoOutputSlot()) {
             increaseCraftingProgress();
-            setChanged(world, pos, state);
+            markDirty();
 
             if(hasCraftingFinished()) {
                 craftItem();
@@ -132,9 +138,9 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
 
     private void craftItem() {
         Optional<AlchemyCraftingRecipe> recipe = getCurrentRecipe();
-        this.removeItem(INPUT_SLOT, 1);
-        this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().getResultItem().getItem(),
-                this.getItem(OUTPUT_SLOT).getCount() + recipe.get().getResultItem().getCount()));
+        this.decrStackSize(INPUT_SLOT, 1);
+        this.setInventorySlotContents(OUTPUT_SLOT, new ItemStack(recipe.get().getRecipeOutput().getItem(),
+                this.getStackInSlot(OUTPUT_SLOT).getCount() + recipe.get().getRecipeOutput().getCount()));
     }
 
     @Override
@@ -147,7 +153,7 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     }
 
     @Override
-    public boolean canPlaceItem(int slot, ItemStack stack) {
+    public boolean isItemValidForSlot(int slot, ItemStack stack) {
         return slot != OUTPUT_SLOT;
     }
 
@@ -160,47 +166,53 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     }
 
     private boolean canInsertIntoOutputSlot() {
-        return this.getItem(OUTPUT_SLOT).isEmpty() ||
-                this.getItem(OUTPUT_SLOT).getCount() < this.getItem(OUTPUT_SLOT).getMaxStackSize();
+        return this.getStackInSlot(OUTPUT_SLOT).isEmpty() ||
+                this.getStackInSlot(OUTPUT_SLOT).getCount() < this.getStackInSlot(OUTPUT_SLOT).getMaxStackSize();
     }
 
     private boolean hasRecipe() {
         Optional<AlchemyCraftingRecipe> recipe = getCurrentRecipe();
-        if(recipe.isEmpty()) {
+        if (recipe.isPresent()) {
+            ItemStack output = recipe.get().getRecipeOutput();
+            return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
+        } else {
             return false;
         }
 
-        ItemStack output = recipe.get().getResultItem();
-        return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
     private Optional<AlchemyCraftingRecipe> getCurrentRecipe() {
-        SimpleContainer inv = new SimpleContainer(this.getContainerSize());
-        for(int i = 0; i < this.getContainerSize(); i++) {
-            inv.setItem(i, this.getItem(i));
+        Inventory inv = new Inventory(this.getSizeInventory());
+        for(int i = 0; i < this.getSizeInventory(); i++) {
+            inv.setInventorySlotContents(i, this.getStackInSlot(i));
         }
-        return this.getLevel().getRecipeManager()
-                .getRecipeFor(AlchemyCraftingRecipe.Type.INSTANCE, inv, this.getLevel());
+        return this.getWorld().getRecipeManager()
+                .getRecipe(AlchemyCraftingRecipe.Type.INSTANCE, inv, this.getWorld());
     }
 
     private boolean canInsertItemIntoOutputSlot(ItemStack output) {
-        return this.getItem(OUTPUT_SLOT).isEmpty() || this.getItem(OUTPUT_SLOT).getItem() == output.getItem();
+        return this.getStackInSlot(OUTPUT_SLOT).isEmpty() || this.getStackInSlot(OUTPUT_SLOT).getItem() == output.getItem();
     }
 
     private boolean canInsertAmountIntoOutputSlot(int count) {
-    int maxCount = this.getItem(OUTPUT_SLOT).isEmpty() ? 64 : this.getItem(OUTPUT_SLOT).getMaxStackSize();
-    int currentCount = this.getItem(OUTPUT_SLOT).getCount();
+    int maxCount = this.getStackInSlot(OUTPUT_SLOT).isEmpty() ? 64 : this.getStackInSlot(OUTPUT_SLOT).getMaxStackSize();
+    int currentCount = this.getStackInSlot(OUTPUT_SLOT).getCount();
 
         return maxCount >= currentCount + count;
 }
 
    @Nullable
    @Override
-    public Packet<ClientGamePacketListener> getUpdatePacket() {
-    return ClientboundBlockEntityDataPacket.create(this);
-}
+    public SUpdateTileEntityPacket getUpdatePacket() {
+       return new SUpdateTileEntityPacket(this.pos, 1, this.write(new CompoundNBT()));
+   }
 
     @Override
-    public CompoundTag getUpdateTag() {
-        return saveWithoutMetadata();
+    public void handleUpdateTag(BlockState state, CompoundNBT tag) {
+        this.read(state, tag);
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        return this.write(new CompoundNBT());
     }
 }

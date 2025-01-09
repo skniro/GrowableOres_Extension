@@ -7,7 +7,7 @@
     ],
     "key": {
         "c": {
-            "item": "minecraft:copper_ingot"
+            "item": "minecraft:gold_ingot"
         },
         "I": {
             "item": "minecraft:iron_block"
@@ -20,7 +20,7 @@
         }
     },
     "result": {
-        "id": "growable_ores_extension:growableores_block",
+        "item": "growable_ores_extension:growableores_block",
         "count": 1
     }
 }

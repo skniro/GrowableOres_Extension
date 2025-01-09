@@ -18,9 +18,9 @@ import java.util.List;
 public class AlchemyCraftingRecipe implements Recipe<SimpleInventory> {
     private final Identifier id;
     private final ItemStack output;
-    private final List<Ingredient> recipeItems;
+    private final DefaultedList<Ingredient> recipeItems;
 
-    public AlchemyCraftingRecipe(Identifier id,ItemStack output, List<Ingredient> recipeItems) {
+    public AlchemyCraftingRecipe(Identifier id,ItemStack output, DefaultedList<Ingredient> recipeItems) {
         this.id = id;
         this.output = output;
         this.recipeItems = recipeItems;
@@ -51,9 +51,9 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleInventory> {
 
     @Override
     public DefaultedList<Ingredient> getIngredients() {
-        DefaultedList<Ingredient> list = DefaultedList.ofSize(this.recipeItems.size());
-        list.addAll(recipeItems);
-        return list;
+/*        DefaultedList<Ingredient> list = DefaultedList.ofSize(this.recipeItems.size());
+        list.addAll(recipeItems);*/
+        return recipeItems;
     }
 
     @Override
@@ -77,7 +77,7 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleInventory> {
 
         @Override
         public AlchemyCraftingRecipe read(Identifier id, JsonObject json) {
-            ItemStack output = ShapedRecipe.outputFromJson(JsonHelper.getObject(json, "result"));
+            ItemStack output = ShapedRecipe.getItemStack(JsonHelper.getObject(json, "result"));
 
             JsonArray ingredients = JsonHelper.getArray(json, "ingredient");
             DefaultedList<Ingredient> inputs = DefaultedList.ofSize(1, Ingredient.EMPTY);
