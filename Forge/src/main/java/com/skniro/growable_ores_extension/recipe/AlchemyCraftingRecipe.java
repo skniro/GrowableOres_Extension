@@ -34,7 +34,7 @@ public class AlchemyCraftingRecipe implements IRecipe<IInventory> {
         if (world.isRemote) {
             return false;
         }
-        return recipeItems.get(0).test(inventory.getStackInSlot(1));
+        return recipeItems.get(0).test(inventory.getStackInSlot(0));
     }
 
 
