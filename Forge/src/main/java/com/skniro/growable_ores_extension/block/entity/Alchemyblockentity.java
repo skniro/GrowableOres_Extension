@@ -22,17 +22,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
-public class Alchemyblockentity extends BlockEntity implements MenuProvider, ImplementedInventory {
-    private final NonNullList<ItemStack> inventory = NonNullList.withSize(4, ItemStack.EMPTY);
-    private float rotation = 0;
-    private static final int FLUID_ITEM_SLOT = 0;
-    private static final int INPUT_SLOT = 1;
-    private static final int OUTPUT_SLOT = 2;
-    private static final int ENERGY_ITEM_SLOT = 3;
+public class Alchemyblockentity extends BlockEntity implements MenuProvider, ImplementedInventory{
+    private final ItemStackHandler itemHandler = new ItemStackHandler(2);
+    private final NonNullList<ItemStack> inventory = NonNullList.withSize(2, ItemStack.EMPTY);
+    private LazyOptional<? extends IItemHandler>[] lazyItemHandler = SidedInvWrapper.create(this, new Direction[]{Direction.UP, Direction.DOWN});
+    private static final int INPUT_SLOT = 0;
+    private static final int OUTPUT_SLOT = 1;
 
     protected final ContainerData propertyDelegate;
     private int progress = 0;
@@ -67,8 +72,9 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     }
 
     public ItemStack getRenderStack() {
-            return this.getItem(INPUT_SLOT);
+        return this.getItem(INPUT_SLOT);
     }
+
     @Override
     public void setChanged() {
         level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
@@ -202,4 +208,32 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     public CompoundTag getUpdateTag() {
         return saveWithoutMetadata();
     }
+
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @javax.annotation.Nullable Direction facing) {
+        if (capability == ForgeCapabilities.ITEM_HANDLER && facing != null && !this.remove) {
+            LazyOptional var10000;
+            switch (facing) {
+                case DOWN -> var10000 = this.lazyItemHandler[1].cast();
+                default-> var10000 = this.lazyItemHandler[0].cast();
+            }
+
+            return var10000;
+        } else {
+            return super.getCapability(capability, facing);
+        }
+    }
+
+    @Override
+    public void invalidateCaps() {
+        super.invalidateCaps();
+        for(int x = 0; x < this.lazyItemHandler.length; ++x) {
+            this.lazyItemHandler[x].invalidate();
+        }
+    }
+
+    public void reviveCaps() {
+        super.reviveCaps();
+        this.lazyItemHandler = SidedInvWrapper.create(this, new Direction[]{Direction.UP, Direction.DOWN});
+    }
+
 }

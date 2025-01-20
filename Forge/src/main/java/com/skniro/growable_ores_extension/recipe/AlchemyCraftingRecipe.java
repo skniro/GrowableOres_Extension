@@ -38,7 +38,7 @@ public class AlchemyCraftingRecipe implements Recipe<SimpleContainer> {
         if (world.isClientSide()) {
             return false;
         }
-        return recipeItems.get(0).test(inventory.getItem(1));
+        return recipeItems.get(0).test(inventory.getItem(0));
     }
 
 

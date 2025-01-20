@@ -139,6 +139,13 @@ repositories {
         name = 'skniro'
         url  = 'https://raw.githubusercontent.com/skniro/maven3/main/'
     }
+
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
     // Put repositories for dependencies here
     // ForgeGradle automatically adds the Forge maven and Maven Central for you
 
@@ -154,6 +161,7 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.minecraftforge:forge:${project.forge_version}"
     runtimeOnly fg.deobf("com.skniro:GrowableOres:2.4.1-1.20.1-Forge")
+    //runtimeOnly fg.deobf("curse.maven:pipez-443900:5550816")
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
     // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
