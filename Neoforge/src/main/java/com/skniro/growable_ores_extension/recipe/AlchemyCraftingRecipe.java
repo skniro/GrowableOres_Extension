@@ -42,7 +42,7 @@ public class AlchemyCraftingRecipe implements Recipe<AlchemyCraftingRecipeInput>
         if (world.isClientSide()) {
             return false;
         }
-        return this.ingredient.test(input.getItem(1));
+        return this.ingredient.test(input.getItem(0));
     }
 
     @Override

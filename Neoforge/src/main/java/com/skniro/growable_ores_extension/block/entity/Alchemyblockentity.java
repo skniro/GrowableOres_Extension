@@ -28,12 +28,10 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
 public class Alchemyblockentity extends BlockEntity implements MenuProvider, ImplementedInventory {
-    private final NonNullList<ItemStack> inventory = NonNullList.withSize(4, ItemStack.EMPTY);
+    private final NonNullList<ItemStack> inventory = NonNullList.withSize(2, ItemStack.EMPTY);
     private float rotation = 0;
-    private static final int FLUID_ITEM_SLOT = 0;
-    private static final int INPUT_SLOT = 1;
-    private static final int OUTPUT_SLOT = 2;
-    private static final int ENERGY_ITEM_SLOT = 3;
+    private static final int INPUT_SLOT = 0;
+    private static final int OUTPUT_SLOT = 1;
 
     protected final ContainerData propertyDelegate;
     private int progress = 0;
