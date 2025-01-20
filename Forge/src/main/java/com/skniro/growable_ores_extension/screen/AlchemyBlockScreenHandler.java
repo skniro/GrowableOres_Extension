@@ -31,8 +31,8 @@ public class AlchemyBlockScreenHandler extends AbstractContainerMenu {
         this.propertyDelegate = delegate;
         this.blockEntity = (Alchemyblockentity) blockEntity;
         this.level = playerInventory.player.getLevel();;
-        this.addSlot(new Slot(inventory, 1, 52, 34));
-        this.addSlot(new FurnaceResultSlot(playerInventory.player, inventory, 2, 100, 34));
+        this.addSlot(new Slot(inventory, 0, 52, 34));
+        this.addSlot(new FurnaceResultSlot(playerInventory.player, inventory, 1, 100, 34));
 
 
 
