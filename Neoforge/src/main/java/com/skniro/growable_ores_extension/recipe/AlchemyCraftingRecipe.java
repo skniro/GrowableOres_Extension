@@ -28,7 +28,7 @@ import net.minecraft.world.level.Level;
             if(world.isClientSide()) {
                 return false;
             }
-            return inputItem.test(input.getItem(1));
+            return inputItem.test(input.getItem(0));
         }
 
         @Override
