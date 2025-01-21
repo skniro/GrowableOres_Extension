@@ -139,6 +139,12 @@ repositories {
         name = 'skniro'
         url  = 'https://raw.githubusercontent.com/skniro/maven3/main/'
     }
+
+    maven {
+        // location of the maven that hosts JEI files since January 2023
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
     // Put repositories for dependencies here
     // ForgeGradle automatically adds the Forge maven and Maven Central for you
 
@@ -154,6 +160,10 @@ dependencies {
     // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.minecraftforge:forge:${project.forge_version}"
     runtimeOnly fg.deobf("com.skniro:GrowableOres:3.0.0-1.18.2-Forge")
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"))
+    compileOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}"))
+    // at runtime, use the full JEI jar for Forge
+    runtimeOnly(fg.deobf("mezz.jei:jei-${minecraft_version}-forge:${jei_version}"))
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
     // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
