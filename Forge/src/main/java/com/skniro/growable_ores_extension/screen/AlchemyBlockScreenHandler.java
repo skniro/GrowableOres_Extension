@@ -23,7 +23,7 @@ public class AlchemyBlockScreenHandler extends AbstractContainerMenu {
 
     public AlchemyBlockScreenHandler(int syncId, Inventory playerInventory, BlockEntity blockEntity, ContainerData delegate) {
         super(AlchemyScreenHandlerType.ALCHEMY.get(), syncId);
-        checkContainerSize((Container) blockEntity,4);
+        checkContainerSize((Container) blockEntity,2);
         this.inventory = (Container) blockEntity;
         inventory.startOpen(playerInventory.player);
         this.propertyDelegate = delegate;
