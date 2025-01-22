@@ -36,7 +36,7 @@ public class JEIGrowableOresEModPlugin implements IModPlugin {
 
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
-        registration.addRecipeClickArea(AlchemyBlockScreen.class, 73, 34, 176, 12,
+        registration.addRecipeClickArea(AlchemyBlockScreen.class, 73, 34, 22, 16,
                 AlchemyCraftingCategory.AlchemyCrafting_TYPE);
     }
 }
