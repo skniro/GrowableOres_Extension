@@ -1,0 +1,30 @@
+{
+    "fabric:load_conditions": [
+        {
+            "condition": "fabric:all_mods_loaded",
+            "values": [
+                "gtceu"
+            ]
+        }
+    ],
+    "forge:conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "gtceu"
+        }
+    ],
+    "neoforge:conditions": [
+        {
+            "type": "neoforge:mod_loaded",
+            "modid": "gtceu"
+        }
+    ],
+    "type": "growable_ores_extension:cane_converter",
+    "ingredient": {
+        "item": "growable_ores:gtm_europium_ingot_cane"
+    },
+    "result": {
+        "id": "gtceu:europium_ingot",
+        "count": 1
+    }
+}
