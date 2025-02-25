@@ -21,10 +21,10 @@
     ],
     "type": "growable_ores_extension:cane_converter",
     "ingredient": {
-        "item": "growable_ores:gtm_exquisitecoal_cane"
+        "item": "growable_ores:gtm_exquisite_coal_cane"
     },
     "result": {
-        "id": "gtceu:coal_exquisite_gem",
+        "id": "gtceu:exquisite_coal_gem",
         "count": 1
     }
 }
