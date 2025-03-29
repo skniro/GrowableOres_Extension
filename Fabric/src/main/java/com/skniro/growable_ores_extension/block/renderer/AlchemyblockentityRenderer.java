@@ -10,12 +10,13 @@ import net.minecraft.client.render.block.entity.BlockEntityRenderer;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemDisplayContext;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ModelTransformationMode;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.RotationAxis;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
 
@@ -23,8 +24,8 @@ public class AlchemyblockentityRenderer implements BlockEntityRenderer<Alchemybl
     public AlchemyblockentityRenderer(BlockEntityRendererFactory.Context context) {
     }
     @Override
-    public void render(Alchemyblockentity entity, float tickDelta, MatrixStack matrices,
-                       VertexConsumerProvider vertexConsumers, int light, int overlay) {
+    public void render(Alchemyblockentity entity, float tickProgress, MatrixStack matrices,
+                       VertexConsumerProvider vertexConsumers, int light, int overlay, Vec3d cameraPos) {
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         ItemStack stack = entity.getRenderStack();
         Direction direction = entity.getCachedState().get(Properties.HORIZONTAL_FACING);
@@ -42,7 +43,7 @@ public class AlchemyblockentityRenderer implements BlockEntityRenderer<Alchemybl
             case WEST -> matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(90));
             case EAST -> matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(270));
         }
-        itemRenderer.renderItem(stack, ModelTransformationMode.GUI, getLightLevel(entity.getWorld(),
+        itemRenderer.renderItem(stack, ItemDisplayContext.GUI, getLightLevel(entity.getWorld(),
                 entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);
         matrices.pop();
     }

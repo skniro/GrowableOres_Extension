@@ -109,8 +109,8 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     @Override
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         Inventories.readNbt(nbt, inventory, registryLookup);
-        progress = nbt.getInt("cane_converter.progress");
-        maxProgress = nbt.getInt("cane_converter.max_progress");
+        progress = nbt.getInt("cane_converter.progress").orElse(0);
+        maxProgress = nbt.getInt("cane_converter.max_progress").orElse(72);
         super.readNbt(nbt, registryLookup);
     }
 
