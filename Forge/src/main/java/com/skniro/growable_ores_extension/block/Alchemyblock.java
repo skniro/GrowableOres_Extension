@@ -7,6 +7,7 @@ import com.skniro.growable_ores_extension.block.entity.Alchemyblockentity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.*;
 import net.minecraft.world.entity.player.Player;
@@ -76,15 +77,13 @@ public class Alchemyblock extends BaseEntityBlock {
     }
 
     @Override
-    public void onRemove(BlockState state, Level world, BlockPos pos, BlockState newState, boolean moved) {
-        if (state.getBlock() != newState.getBlock()) {
-            BlockEntity blockEntity = world.getBlockEntity(pos);
-            if (blockEntity instanceof Alchemyblockentity) {
-                Containers.dropContents(world, pos, (Container) blockEntity);
-                world.updateNeighbourForOutputSignal(pos,this);
-            }
-            super.onRemove(state, world, pos, newState, moved);
+    public void affectNeighborsAfterRemoval(BlockState state, ServerLevel world, BlockPos pos, boolean moved) {
+        BlockEntity blockEntity = world.getBlockEntity(pos);
+        if (blockEntity instanceof Alchemyblockentity) {
+            Containers.dropContents(world, pos, (Container) blockEntity);
+            world.updateNeighbourForOutputSignal(pos,this);
         }
+        super.affectNeighborsAfterRemoval(state, world, pos, moved);
     }
 
     @Override

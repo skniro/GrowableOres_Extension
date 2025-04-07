@@ -110,8 +110,8 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     @Override
     protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
         ContainerHelper.loadAllItems(nbt, inventory, registryLookup);
-        progress = nbt.getInt("cane_converter.progress");
-        maxProgress = nbt.getInt("cane_converter.max_progress");
+        progress = nbt.getInt("cane_converter.progress").orElse(0);
+        maxProgress = nbt.getInt("cane_converter.max_progress").orElse(72);
         super.loadAdditional(nbt, registryLookup);
     }
 

@@ -18,13 +18,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.phys.Vec3;
 
 public class AlchemyblockentityRenderer implements BlockEntityRenderer<Alchemyblockentity> {
     public AlchemyblockentityRenderer(BlockEntityRendererProvider.Context context) {
     }
     @Override
     public void render(Alchemyblockentity entity, float tickDelta, PoseStack matrices,
-                       MultiBufferSource vertexConsumers, int light, int overlay) {
+                       MultiBufferSource vertexConsumers, int light, int overlay, Vec3 vec3) {
         ItemRenderer itemRenderer = Minecraft.getInstance().getItemRenderer();
         ItemStack stack = entity.getRenderStack();
         Direction direction = entity.getBlockState().getValue(BlockStateProperties.HORIZONTAL_FACING);
