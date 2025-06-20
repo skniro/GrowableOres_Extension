@@ -4,7 +4,7 @@ import com.skniro.growable_ores_extension.GrowableOresExtension;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.common.extensions.IForgeMenuType;
-import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.bus.BusGroup;
 import net.minecraftforge.network.IContainerFactory;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -22,7 +22,7 @@ public class AlchemyScreenHandlerType <T extends AbstractContainerMenu>{
         return MENUS.register(name, () -> IForgeMenuType.create(factory));
     }
 
-    public static void registeralchemyscreenhandlertype (IEventBus eventBus) {
+    public static void registeralchemyscreenhandlertype (BusGroup eventBus) {
         MENUS.register(eventBus);
     }
 }

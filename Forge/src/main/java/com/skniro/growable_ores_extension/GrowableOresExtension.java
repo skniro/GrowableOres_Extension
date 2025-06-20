@@ -10,19 +10,14 @@ import com.skniro.growable_ores_extension.item.ModCreativeModeTabs;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
 import com.skniro.growable_ores_extension.screen.AlchemyScreenHandlerType;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
-import net.minecraft.client.renderer.blockentity.SignRenderer;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.level.block.state.properties.WoodType;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.listener.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -40,10 +35,10 @@ public class GrowableOresExtension {
 
     public GrowableOresExtension(FMLJavaModLoadingContext context) {
         //ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, GrowableConfig.GENERAL_SPEC, "growable_ores_config.toml");
-        IEventBus modEventBus = context.getModEventBus();
+        var modEventBus = context.getModBusGroup();
 
         // Register the commonSetup method for modloading
-        modEventBus.addListener(this::commonSetup);
+        FMLCommonSetupEvent.getBus(modEventBus).addListener(this::commonSetup);
         // Register the Deferred Register to the mod event bus so blocks get registered
 
 
@@ -53,9 +48,7 @@ public class GrowableOresExtension {
         GrowableOresBlocks.registerBlocks(modEventBus);
         MapleItems.registerModItems(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
-        modEventBus.addListener(this::addCreative);
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(this);
+        BuildCreativeModeTabContentsEvent.getBus(modEventBus).addListener(this::addCreative);
     }
 
     public void addCreative(BuildCreativeModeTabContentsEvent event) {

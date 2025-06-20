@@ -26,6 +26,8 @@ import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.common.util.LazyOptional;
@@ -100,19 +102,19 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     }
 
     @Override
-    protected void saveAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
-        super.saveAdditional(nbt, registryLookup);
-        ContainerHelper.saveAllItems(nbt, inventory, registryLookup);
-        nbt.putInt("cane_converter.progress", progress);
-        nbt.putInt("cane_converter.max_progress", maxProgress);
+    protected void saveAdditional(ValueOutput valueOutput) {
+        super.saveAdditional(valueOutput);
+        ContainerHelper.saveAllItems(valueOutput, inventory);
+        valueOutput.putInt("cane_converter.progress", progress);
+        valueOutput.putInt("cane_converter.max_progress", maxProgress);
     }
 
     @Override
-    protected void loadAdditional(CompoundTag nbt, HolderLookup.Provider registryLookup) {
-        ContainerHelper.loadAllItems(nbt, inventory, registryLookup);
-        progress = nbt.getInt("cane_converter.progress").orElse(0);
-        maxProgress = nbt.getInt("cane_converter.max_progress").orElse(72);
-        super.loadAdditional(nbt, registryLookup);
+    protected void loadAdditional(ValueInput valueInput) {
+        ContainerHelper.loadAllItems(valueInput, inventory);
+        progress = valueInput.getInt("cane_converter.progress").orElse(0);
+        maxProgress = valueInput.getInt("cane_converter.max_progress").orElse(72);
+        super.loadAdditional(valueInput);
     }
 
     public void tick(Level world, BlockPos pos, BlockState state) {

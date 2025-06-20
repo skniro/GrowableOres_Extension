@@ -5,6 +5,7 @@ import com.skniro.growable_ores_extension.GrowableOresExtension;
 import com.skniro.growable_ores_extension.screen.AlchemyBlockScreenHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.render.GameRenderer;
@@ -29,18 +30,18 @@ public class AlchemyBlockScreen extends HandledScreen<AlchemyBlockScreenHandler>
 
     @Override
     protected void drawBackground(DrawContext context, float delta, int mouseX, int mouseY) {
-        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        //RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         //RenderSystem.setShaderTexture(0, TEXTURE);
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
-        context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight,256,256);
+        context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight,256,256);
 
         renderProgressArrow(context, x, y);
     }
 
     private void renderProgressArrow(DrawContext context, int x, int y) {
         if(handler.isCrafting()) {
-            context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, x + 73, y + 34, 176, 12, handler.getScaledProgress(),45,256,256);
+            context.drawTexture(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 73, y + 34, 176, 12, handler.getScaledProgress(),45,256,256);
         }
         /*if(handler.hasFuel()){
             drawTexture(matrices, x + 18, y + 33 + 14 - handler.getScaledFuelProgress(), 176,
@@ -50,7 +51,6 @@ public class AlchemyBlockScreen extends HandledScreen<AlchemyBlockScreenHandler>
 
     @Override
     public void render(DrawContext context , int mouseX, int mouseY, float delta) {
-        renderBackground(context, mouseX, mouseY, delta);
         super.render(context, mouseX, mouseY, delta);
         drawMouseoverTooltip(context, mouseX, mouseY);
     }

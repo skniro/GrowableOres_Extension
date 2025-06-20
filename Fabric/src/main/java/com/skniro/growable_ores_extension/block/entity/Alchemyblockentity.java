@@ -21,6 +21,8 @@ import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.screen.PropertyDelegate;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.storage.ReadView;
+import net.minecraft.storage.WriteView;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
@@ -99,19 +101,19 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     }
 
     @Override
-    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        super.writeNbt(nbt, registryLookup);
-        Inventories.writeNbt(nbt, inventory, registryLookup);
+    protected void writeData(WriteView nbt) {
+        super.writeData(nbt);
+        Inventories.writeData(nbt, inventory);
         nbt.putInt("cane_converter.progress", progress);
         nbt.putInt("cane_converter.max_progress", maxProgress);
     }
 
     @Override
-    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
-        Inventories.readNbt(nbt, inventory, registryLookup);
-        progress = nbt.getInt("cane_converter.progress").orElse(0);
-        maxProgress = nbt.getInt("cane_converter.max_progress").orElse(72);
-        super.readNbt(nbt, registryLookup);
+    protected void readData(ReadView nbt) {
+        Inventories.readData(nbt, inventory);
+        progress = nbt.getInt("cane_converter.progress", 0);
+        maxProgress = nbt.getInt("cane_converter.max_progress", 72);
+        super.readData(nbt);
     }
 
     public void tick(World world, BlockPos pos, BlockState state) {
