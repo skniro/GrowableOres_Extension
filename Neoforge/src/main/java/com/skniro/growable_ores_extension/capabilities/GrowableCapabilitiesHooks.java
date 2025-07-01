@@ -9,7 +9,7 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import net.neoforged.neoforge.items.wrapper.SidedInvWrapper;
 
-@EventBusSubscriber(modid = GrowableOresExtension.MODID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = GrowableOresExtension.MODID)
 public class GrowableCapabilitiesHooks {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
