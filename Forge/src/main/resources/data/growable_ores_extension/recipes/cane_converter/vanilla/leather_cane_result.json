@@ -1,9 +1,10 @@
 {
     "type": "growable_ores_extension:cane_converter",
 
-    "ingredient": {
+    "ingredient": [ {
         "item": "growable_ores:leather_cane"
-    },
+    }
+    ],
     "result":  {
         "item": "minecraft:leather",
         "count": 2
