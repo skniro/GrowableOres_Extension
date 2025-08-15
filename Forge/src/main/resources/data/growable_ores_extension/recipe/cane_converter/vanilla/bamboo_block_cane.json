@@ -1,0 +1,13 @@
+{
+    "fabric:load_conditions": [],
+    "forge:conditions": [],
+    "neoforge:conditions": [],
+    "type": "growable_ores_extension:cane_converter",
+    "ingredient": {
+        "item": "growable_ores:bamboo_block_cane"
+    },
+    "result": {
+        "id": "minecraft:bamboo_block",
+        "count": 1
+    }
+}

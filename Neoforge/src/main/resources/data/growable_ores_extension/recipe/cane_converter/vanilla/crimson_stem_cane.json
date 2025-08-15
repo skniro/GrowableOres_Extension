@@ -1,0 +1,13 @@
+{
+    "fabric:load_conditions": [],
+    "forge:conditions": [],
+    "neoforge:conditions": [],
+    "type": "growable_ores_extension:cane_converter",
+    "ingredient": {
+        "item": "growable_ores:crimson_stem_cane"
+    },
+    "result": {
+        "id": "minecraft:crimson_stem",
+        "count": 1
+    }
+}
