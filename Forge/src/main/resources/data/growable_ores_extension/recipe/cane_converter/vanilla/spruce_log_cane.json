@@ -1,0 +1,11 @@
+{
+    "fabric:load_conditions": [],
+    "forge:conditions": [],
+    "neoforge:conditions": [],
+    "type": "growable_ores_extension:cane_converter",
+    "ingredient": "growable_ores:spruce_log_cane",
+    "result": {
+        "id": "minecraft:spruce_log",
+        "count": 1
+    }
+}
