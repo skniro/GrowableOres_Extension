@@ -1,0 +1,42 @@
+package com.skniro.growable_ores_extension.compat.jei;
+
+import com.skniro.growable_ores_extension.GrowableOresExtension;
+import com.skniro.growable_ores_extension.client.gui.screen.ingame.AlchemyBlockScreen;
+import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipe;
+import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
+import mezz.jei.api.IModPlugin;
+import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.registration.IGuiHandlerRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.RecipeManager;
+import java.util.List;
+
+@JeiPlugin
+public class JEIGrowableOresEModPlugin implements IModPlugin {
+    @Override
+    public ResourceLocation getPluginUid() {
+        return ResourceLocation.tryBuild(GrowableOresExtension.MODID, "jei_plugin");
+    }
+
+    @Override
+    public void registerCategories(IRecipeCategoryRegistration registration) {
+        registration.addRecipeCategories(new AlchemyCraftingCategory(registration.getJeiHelpers().getGuiHelper()));
+    }
+
+    @Override
+    public void registerRecipes(IRecipeRegistration registration) {
+        RecipeManager recipeManager = Minecraft.getInstance().level.getServer().getRecipeManager();
+        List<AlchemyCraftingRecipe> craftingRecipes = recipeManager.recipeMap().byType(AlchemyRecipeType.Cane_Converter_TYPE.get()).stream().map(RecipeHolder::value).toList();
+        registration.addRecipes(AlchemyCraftingCategory.AlchemyCrafting_TYPE, craftingRecipes);
+    }
+
+    @Override
+    public void registerGuiHandlers(IGuiHandlerRegistration registration) {
+        registration.addRecipeClickArea(AlchemyBlockScreen.class, 73, 34, 22, 16,
+                AlchemyCraftingCategory.AlchemyCrafting_TYPE);
+    }
+}
