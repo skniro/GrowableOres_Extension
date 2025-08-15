@@ -1,0 +1,13 @@
+{
+    "fabric:load_conditions": [],
+    "forge:conditions": [],
+    "neoforge:conditions": [],
+    "type": "growable_ores_extension:cane_converter",
+    "ingredient": {
+        "item": "growable_ores:jungle_log_cane"
+    },
+    "result": {
+        "item": "minecraft:jungle_log",
+        "count": 1
+    }
+}
