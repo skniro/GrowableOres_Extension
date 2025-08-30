@@ -1,0 +1,13 @@
+{
+    "fabric:load_conditions": [],
+    "forge:conditions": [],
+    "neoforge:conditions": [],
+    "type": "growable_ores_extension:cane_converter",
+    "ingredient": {
+        "item": "growable_ores:cherry_log_cane"
+    },
+    "result": {
+        "item": "minecraft:cherry_log",
+        "count": 1
+    }
+}
