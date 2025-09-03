@@ -3,9 +3,7 @@
     "forge:conditions": [],
     "neoforge:conditions": [],
     "type": "growable_ores_extension:cane_converter",
-    "ingredient": {
-        "item": "growable_ores:prismarine_crystals_cane"
-    },
+    "ingredient": "growable_ores:prismarine_crystals_cane",
     "result": {
         "id": "minecraft:prismarine_crystals",
         "count": 1
