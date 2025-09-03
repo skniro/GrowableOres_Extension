@@ -17,6 +17,14 @@ repositories {
             includeGroup "curse.maven"
         }
     }
+    maven{
+        name = 'skniro'
+        url  = 'https://raw.githubusercontent.com/skniro/maven3/main/'
+    }
+    maven {
+        name = 'mavenLocal2'
+        url System.getenv("MAVEN_URL")
+    }
 }
 
 base {
@@ -128,7 +136,7 @@ dependencies {
     // This maps to ./libs/coolmod-${mc_version}-${coolmod_version}.jar
     // The group id is ignored when searching -- in this case, it is "blank"
     // implementation "blank:coolmod-${mc_version}:${coolmod_version}"
-
+    runtimeOnly("com.skniro:GrowableOres:${growable_version}-${minecraft_version}-NeoForge")
     // Example mod dependency using a file as dependency
     // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
 
