@@ -20,9 +20,7 @@
         }
     ],
     "type": "growable_ores_extension:cane_converter",
-    "ingredient": {
-        "item": "growable_ores:ot_electrum_ingot_cane"
-    },
+    "ingredient": "growable_ores:ot_electrum_ingot_cane",
     "result": {
         "id": "oritech:electrum_ingot",
         "count": 1
