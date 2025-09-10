@@ -3,9 +3,11 @@
     "forge:conditions": [],
     "neoforge:conditions": [],
     "type": "growable_ores_extension:cane_converter",
-    "ingredient": {
-        "item": "growable_ores:amethyst_shard_cane"
-    },
+    "ingredient": [
+        {
+            "item": "growable_ores:amethyst_shard_cane"
+        }
+    ],
     "result": {
         "item": "minecraft:amethyst_shard",
         "count": 1
