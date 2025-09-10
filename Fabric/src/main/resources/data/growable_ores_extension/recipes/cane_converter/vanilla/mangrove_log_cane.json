@@ -9,7 +9,7 @@
         }
     ],
     "result": {
-        "id": "minecraft:mangrove_log",
+        "item": "minecraft:mangrove_log",
         "count": 1
     }
 }
