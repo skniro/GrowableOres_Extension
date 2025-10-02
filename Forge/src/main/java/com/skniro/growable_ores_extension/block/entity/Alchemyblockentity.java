@@ -1,6 +1,6 @@
 package com.skniro.growable_ores_extension.block.entity;
-import java.util.Optional;
 
+import com.skniro.growable_ores_extension.block.Alchemyblock;
 import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipe;
 import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
@@ -9,38 +9,38 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponentMap;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.ShelfBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ForgeCapabilities;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.IItemHandler;
-import net.minecraftforge.items.ItemStackHandler;
-import net.minecraftforge.items.wrapper.SidedInvWrapper;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class Alchemyblockentity extends BlockEntity implements MenuProvider, ImplementedInventory {
-    private final ItemStackHandler itemHandler = new ItemStackHandler(2);
+import java.util.Optional;
+
+public class Alchemyblockentity extends BlockEntity implements MenuProvider, ImplementedInventory, ItemOwner {
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(2, ItemStack.EMPTY);
-    private LazyOptional<? extends IItemHandler>[] lazyItemHandler = SidedInvWrapper.create(this, new Direction[]{Direction.UP, Direction.DOWN});
+    private float rotation = 0;
     private static final int INPUT_SLOT = 0;
     private static final int OUTPUT_SLOT = 1;
 
@@ -182,6 +182,7 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
         ItemStack output = recipe.get().value().output();
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
+
     private Optional<RecipeHolder<AlchemyCraftingRecipe>> getCurrentRecipe() {
         return this.getLevel().getServer().getRecipeManager()
                 .getRecipeFor(AlchemyRecipeType.Cane_Converter_TYPE.get(), new AlchemyCraftingRecipeInput(inventory.get(INPUT_SLOT)), this.getLevel());
@@ -210,32 +211,36 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
         return saveWithoutMetadata(registryLookup);
     }
 
-
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @javax.annotation.Nullable Direction facing) {
-        if (capability == ForgeCapabilities.ITEM_HANDLER && facing != null && !this.remove) {
-            LazyOptional var10000;
-            switch (facing) {
-                case DOWN -> var10000 = this.lazyItemHandler[1].cast();
-                default-> var10000 = this.lazyItemHandler[0].cast();
-            }
-
-            return var10000;
-        } else {
-            return super.getCapability(capability, facing);
-        }
+    @Override
+    protected void applyImplicitComponents(DataComponentGetter p_426426_) {
+        super.applyImplicitComponents(p_426426_);
+        p_426426_.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyInto(this.inventory);
     }
 
     @Override
-    public void invalidateCaps() {
-        super.invalidateCaps();
-        for(int x = 0; x < this.lazyItemHandler.length; ++x) {
-            this.lazyItemHandler[x].invalidate();
-        }
+    protected void collectImplicitComponents(DataComponentMap.Builder p_426984_) {
+        super.collectImplicitComponents(p_426984_);
+        p_426984_.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(this.inventory));
     }
 
-    public void reviveCaps() {
-        super.reviveCaps();
-        this.lazyItemHandler = SidedInvWrapper.create(this, new Direction[]{Direction.UP, Direction.DOWN});
+    @Override
+    public void removeComponentsFromTag(ValueOutput p_424412_) {
+        p_424412_.discard("Items");
     }
 
+
+    @Override
+    public Level level() {
+        return this.level;
+    }
+
+    @Override
+    public Vec3 position() {
+        return this.getBlockPos().getCenter();
+    }
+
+    @Override
+    public float getVisualRotationYInDegrees() {
+        return this.getBlockState().getValue(Alchemyblock.FACING).getOpposite().toYRot();
+    }
 }
