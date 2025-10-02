@@ -88,7 +88,7 @@ public class Alchemyblock extends BaseEntityBlock {
 
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!world.isClientSide()) {
+        if (!world.isClientSide) {
             BlockEntity entity = world.getBlockEntity(pos);
             if (entity instanceof Alchemyblockentity alchemyblockentity) {
                 ((ServerPlayer) player).openMenu(new SimpleMenuProvider(alchemyblockentity, Component.translatable("gui.growableores.cane_converter")), pos);

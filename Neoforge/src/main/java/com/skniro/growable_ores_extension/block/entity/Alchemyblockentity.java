@@ -1,7 +1,6 @@
 package com.skniro.growable_ores_extension.block.entity;
 import java.util.Optional;
 
-import com.skniro.growable_ores_extension.block.Alchemyblock;
 import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipe;
 import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
@@ -10,9 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
-import net.minecraft.core.component.DataComponentGetter;
-import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
@@ -20,24 +16,20 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.MenuProvider;
-import net.minecraft.world.entity.ItemOwner;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.ShelfBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class Alchemyblockentity extends BlockEntity implements MenuProvider, ImplementedInventory, ItemOwner {
+public class Alchemyblockentity extends BlockEntity implements MenuProvider, ImplementedInventory {
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(2, ItemStack.EMPTY);
     private float rotation = 0;
     private static final int INPUT_SLOT = 0;
@@ -208,38 +200,5 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     @Override
     public CompoundTag getUpdateTag(HolderLookup.Provider registryLookup) {
         return saveWithoutMetadata(registryLookup);
-    }
-
-    @Override
-    protected void applyImplicitComponents(DataComponentGetter p_426426_) {
-        super.applyImplicitComponents(p_426426_);
-        p_426426_.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY).copyInto(this.inventory);
-    }
-
-    @Override
-    protected void collectImplicitComponents(DataComponentMap.Builder p_426984_) {
-        super.collectImplicitComponents(p_426984_);
-        p_426984_.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(this.inventory));
-    }
-
-    @Override
-    public void removeComponentsFromTag(ValueOutput p_424412_) {
-        p_424412_.discard("Items");
-    }
-
-
-    @Override
-    public Level level() {
-        return this.level;
-    }
-
-    @Override
-    public Vec3 position() {
-        return this.getBlockPos().getCenter();
-    }
-
-    @Override
-    public float getVisualRotationYInDegrees() {
-        return this.getBlockState().getValue(Alchemyblock.FACING).getOpposite().toYRot();
     }
 }

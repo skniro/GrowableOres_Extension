@@ -1,14 +1,12 @@
 package com.skniro.growable_ores_extension.block.entity;
 import java.util.Optional;
 
-import com.skniro.growable_ores_extension.block.Alchemyblock;
 import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipe;
 import com.skniro.growable_ores_extension.recipe.AlchemyCraftingRecipeInput;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
 import com.skniro.growable_ores_extension.screen.AlchemyBlockScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.ShelfBlock;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
@@ -26,15 +24,13 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.storage.ReadView;
 import net.minecraft.storage.WriteView;
 import net.minecraft.text.Text;
-import net.minecraft.util.HeldItemContext;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory, HeldItemContext {
+public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHandlerFactory<BlockPos>, ImplementedInventory {
     private final DefaultedList<ItemStack> inventory = DefaultedList.ofSize(4, ItemStack.EMPTY);
     private float rotation = 0;
     private static final int FLUID_ITEM_SLOT = 0;
@@ -211,20 +207,5 @@ public class Alchemyblockentity extends BlockEntity implements ExtendedScreenHan
     @Override
     public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registryLookup) {
         return createNbt(registryLookup);
-    }
-
-    @Override
-    public World getEntityWorld() {
-        return this.world;
-    }
-
-    @Override
-    public Vec3d getEntityPos() {
-        return this.getPos().toCenterPos();
-    }
-
-    @Override
-    public float getBodyYaw() {
-        return this.getCachedState().get(Alchemyblock.FACING).getOpposite().getOffsetY();
     }
 }
