@@ -14,7 +14,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
 public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScreenHandler> {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(GrowableOresExtension.MODID, "textures/gui/container/cane_converter.png");
 
