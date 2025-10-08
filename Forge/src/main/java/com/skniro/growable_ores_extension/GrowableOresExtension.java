@@ -48,7 +48,7 @@ public class GrowableOresExtension {
         GrowableOresBlocks.registerBlocks(modEventBus);
         MapleItems.registerModItems(modEventBus);
         ModCreativeModeTabs.register(modEventBus);
-        BuildCreativeModeTabContentsEvent.getBus(modEventBus).addListener(this::addCreative);
+        BuildCreativeModeTabContentsEvent.BUS.addListener(this::addCreative);
     }
 
     public void addCreative(BuildCreativeModeTabContentsEvent event) {
@@ -67,7 +67,7 @@ public class GrowableOresExtension {
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
     public static class ClientModEvents {
 
         @SubscribeEvent
@@ -77,7 +77,7 @@ public class GrowableOresExtension {
         }
     }
 
-    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+    @Mod.EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
     public class ParticleFactoryRegistry {
         @SubscribeEvent
         public static void onParticleFactoryRegistration(RegisterParticleProvidersEvent event) {
