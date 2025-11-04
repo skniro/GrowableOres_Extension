@@ -1,0 +1,11 @@
+{
+    "fabric:load_conditions": [],
+    "forge:conditions": [],
+    "neoforge:conditions": [],
+    "type": "growable_ores_extension:cane_converter",
+    "ingredient": "growable_ores:sand_cane",
+    "result": {
+        "id": "minecraft:sand",
+        "count": 1
+    }
+}
