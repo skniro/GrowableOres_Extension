@@ -1,21 +1,16 @@
 package com.skniro.growable_ores_extension.client.gui.screen.ingame;
 
-import com.mojang.blaze3d.pipeline.RenderPipeline;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.skniro.growable_ores_extension.GrowableOresExtension;
 import com.skniro.growable_ores_extension.screen.AlchemyBlockScreenHandler;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Inventory;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 
 public class AlchemyBlockScreen extends AbstractContainerScreen<AlchemyBlockScreenHandler> {
-    private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(GrowableOresExtension.MODID, "textures/gui/container/cane_converter.png");
+    private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(GrowableOresExtension.MODID, "textures/gui/container/cane_converter.png");
 
     public AlchemyBlockScreen(AlchemyBlockScreenHandler handler, Inventory inventory, Component title) {
         super(handler, inventory, title);
