@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public class AlchemyScreenHandlerType <T extends AbstractContainerMenu>{
     public static final DeferredRegister<MenuType<?>> MENUS =
-            DeferredRegister.create(BuiltInRegistries.MENU, GrowableOresExtension.MODID);
+            DeferredRegister.create(BuiltInRegistries.MENU, GrowableOresExtension.MOD_ID);
 
     public static final Supplier<MenuType<AlchemyBlockScreenHandler>> ALCHEMY =
             registerMenuType( "cane_converter_screen_handler", AlchemyBlockScreenHandler::new);

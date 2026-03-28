@@ -12,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class AlchemyScreenHandlerType <T extends AbstractContainerMenu>{
     public static final DeferredRegister<MenuType<?>> MENUS =
-            DeferredRegister.create(ForgeRegistries.MENU_TYPES, GrowableOresExtension.MODID);
+            DeferredRegister.create(ForgeRegistries.MENU_TYPES, GrowableOresExtension.MOD_ID);
 
     public static final RegistryObject<MenuType<AlchemyBlockScreenHandler>> ALCHEMY =
             registerMenuType( "cane_converter_screen_handler", AlchemyBlockScreenHandler::new);

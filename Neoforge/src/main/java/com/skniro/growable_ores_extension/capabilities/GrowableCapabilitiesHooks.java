@@ -9,7 +9,7 @@ import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.transfer.item.WorldlyContainerWrapper;
 
-@EventBusSubscriber(modid = GrowableOresExtension.MODID)
+@EventBusSubscriber(modid = GrowableOresExtension.MOD_ID)
 public class GrowableCapabilitiesHooks {
     @SubscribeEvent
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {

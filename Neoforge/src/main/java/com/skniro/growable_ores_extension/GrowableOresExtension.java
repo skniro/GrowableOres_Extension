@@ -29,10 +29,10 @@ import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod(GrowableOresExtension.MODID)
+@Mod(GrowableOresExtension.MOD_ID)
 public class GrowableOresExtension {
     // Define mod id in a common place for everything to reference
-    public static final String MODID = "growable_ores_extension";
+    public static final String MOD_ID = "growable_ores_extension";
     // Directly reference a slf4j logger
     private static final Logger LOGGER = LogUtils.getLogger();
 
@@ -74,7 +74,7 @@ public class GrowableOresExtension {
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
-    @EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public static class ClientModEvents {
 
         @SubscribeEvent
@@ -88,7 +88,7 @@ public class GrowableOresExtension {
         }
     }
 
-    @EventBusSubscriber(modid = MODID, value = Dist.CLIENT)
+    @EventBusSubscriber(modid = MOD_ID, value = Dist.CLIENT)
     public class ParticleFactoryRegistry {
         @SubscribeEvent
         public static void onParticleFactoryRegistration(RegisterParticleProvidersEvent event) {

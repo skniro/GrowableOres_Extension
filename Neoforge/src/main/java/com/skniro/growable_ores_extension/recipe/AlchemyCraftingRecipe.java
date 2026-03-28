@@ -3,28 +3,23 @@ package com.skniro.growable_ores_extension.recipe;
 
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.PlacementInfo;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeBookCategory;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
 
 public class AlchemyCraftingRecipe implements Recipe<AlchemyCraftingRecipeInput> {
-    final ItemStack output;
+    final ItemStackTemplate output;
     final Ingredient ingredient;
     @Nullable
     private PlacementInfo ingredientPlacement;
 
 
-    public AlchemyCraftingRecipe(Ingredient ingredients, ItemStack output) {
+    public AlchemyCraftingRecipe(Ingredient ingredients, ItemStackTemplate output) {
         this.output = output;
         this.ingredient = ingredients;
     }
@@ -33,7 +28,7 @@ public class AlchemyCraftingRecipe implements Recipe<AlchemyCraftingRecipeInput>
         return this.ingredient;
     }
 
-    public ItemStack output() {
+    public ItemStackTemplate output() {
         return this.output;
     }
 
@@ -42,12 +37,22 @@ public class AlchemyCraftingRecipe implements Recipe<AlchemyCraftingRecipeInput>
         if (world.isClientSide()) {
             return false;
         }
-        return this.ingredient.test(input.getItem(0));
+        return this.ingredient.test(input.getItem(1));
     }
 
     @Override
-    public ItemStack assemble(AlchemyCraftingRecipeInput input, HolderLookup.Provider lookup) {
-        return output.copy();
+    public ItemStack assemble(AlchemyCraftingRecipeInput input) {
+        return output.create();
+    }
+
+    @Override
+    public boolean showNotification() {
+        return false;
+    }
+
+    @Override
+    public String group() {
+        return "";
     }
 
     @Override
@@ -74,34 +79,34 @@ public class AlchemyCraftingRecipe implements Recipe<AlchemyCraftingRecipeInput>
         return null;
     }
 
-    public static class Serializer implements RecipeSerializer<AlchemyCraftingRecipe> {
-        public static final MapCodec<AlchemyCraftingRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
-                Ingredient.CODEC.fieldOf("ingredient").forGetter((recipe) -> {
-                    return recipe.ingredient;
-                }),
-                ItemStack.CODEC.fieldOf("result").forGetter((recipe) -> {
-                    return recipe.output;
-                })
-        ).apply(inst, AlchemyCraftingRecipe::new));
+    public static final MapCodec<AlchemyCraftingRecipe> CODEC = RecordCodecBuilder.mapCodec(inst -> inst.group(
+            Ingredient.CODEC.fieldOf("ingredient").forGetter((recipe) -> {
+                return recipe.ingredient;
+            }),
+            ItemStackTemplate.CODEC.fieldOf("result").forGetter((recipe) -> {
+                return recipe.output;
+            })
+    ).apply(inst, AlchemyCraftingRecipe::new));
 
-        public static final StreamCodec<RegistryFriendlyByteBuf, AlchemyCraftingRecipe> STREAM_CODEC =
-                StreamCodec.composite(
-                        Ingredient.CONTENTS_STREAM_CODEC, AlchemyCraftingRecipe::ingredient,
-                        ItemStack.STREAM_CODEC, AlchemyCraftingRecipe::output,
-                        AlchemyCraftingRecipe::new);
+    public static final StreamCodec<RegistryFriendlyByteBuf, AlchemyCraftingRecipe> STREAM_CODEC =
+            StreamCodec.composite(
+                    Ingredient.CONTENTS_STREAM_CODEC, AlchemyCraftingRecipe::ingredient,
+                    ItemStackTemplate.STREAM_CODEC, AlchemyCraftingRecipe::output,
+                    AlchemyCraftingRecipe::new);
 
-        public Serializer() {
-        }
+    public static final RecipeSerializer<AlchemyCraftingRecipe> SERIALIZER =
+            new RecipeSerializer<>(CODEC, STREAM_CODEC);
 
-        public MapCodec<AlchemyCraftingRecipe> codec() {
-            return CODEC;
-        }
 
-        public StreamCodec<RegistryFriendlyByteBuf, AlchemyCraftingRecipe> streamCodec() {
-            return STREAM_CODEC;
-        }
+    public MapCodec<AlchemyCraftingRecipe> codec() {
+        return CODEC;
+    }
+
+    public StreamCodec<RegistryFriendlyByteBuf, AlchemyCraftingRecipe> streamCodec() {
+        return STREAM_CODEC;
     }
 }
+
 
 
 

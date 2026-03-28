@@ -21,7 +21,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class GrowableOresBlocks {
-    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(GrowableOresExtension.MODID);
+    public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(GrowableOresExtension.MOD_ID);
 
     public static final Supplier<Block> GrowableOres_Block =registerBlock("growableores_block",
             Alchemyblock::new ,(BlockBehaviour.Properties.of().requiresCorrectToolForDrops().strength(3.0F, 3.0F)), ModCreativeModeTabs.Growable_Ores_Group);
@@ -29,7 +29,7 @@ public class GrowableOresBlocks {
 
 
     private static <B extends Block> DeferredBlock<B> registerBlockWithoutItem(String name, Function<BlockBehaviour.Properties, ? extends B> block, BlockBehaviour.Properties properties) {
-        DeferredBlock<B> register = BLOCKS.registerBlock(name, block, properties.setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(GrowableOresExtension.MODID, name))));
+        DeferredBlock<B> register = BLOCKS.registerBlock(name, block, ()-> properties.setId(ResourceKey.create(Registries.BLOCK, Identifier.fromNamespaceAndPath(GrowableOresExtension.MOD_ID, name))));
         return register;
     }
 
@@ -41,7 +41,7 @@ public class GrowableOresBlocks {
 
     private static <T extends Block> Holder<Item> registerBlockItem(String name, Supplier<T> block) {
         return MapleItems.ITEMS.register(name, () -> new BlockItem(block.get(),
-                new Item.Properties().useBlockDescriptionPrefix().setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(GrowableOresExtension.MODID, name)))));
+                new Item.Properties().useBlockDescriptionPrefix().setId(ResourceKey.create(Registries.ITEM, Identifier.fromNamespaceAndPath(GrowableOresExtension.MOD_ID, name)))));
     }
 
     public static void registerBlocks(IEventBus eventBus) {

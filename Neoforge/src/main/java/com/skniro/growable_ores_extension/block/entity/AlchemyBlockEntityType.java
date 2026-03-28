@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 public class AlchemyBlockEntityType {
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, GrowableOresExtension.MODID);
+            DeferredRegister.create(BuiltInRegistries.BLOCK_ENTITY_TYPE, GrowableOresExtension.MOD_ID);
 
 
     public static final Supplier<BlockEntityType<Alchemyblockentity>> ALCHEMY_BLOCK_ENTITY =

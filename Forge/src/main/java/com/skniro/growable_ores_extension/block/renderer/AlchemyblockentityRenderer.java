@@ -6,32 +6,28 @@ import com.mojang.math.Axis;
 import com.skniro.growable_ores_extension.block.entity.Alchemyblockentity;
 import com.skniro.growable_ores_extension.block.renderer.state.AlchemyBlockEntityRenderState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.LightCoordsUtil;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.Vec3;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class AlchemyblockentityRenderer implements BlockEntityRenderer<Alchemyblockentity, AlchemyBlockEntityRenderState> {
-
     public AlchemyblockentityRenderer(BlockEntityRendererProvider.Context context) {
     }
-
     @Override
-    public void submit(AlchemyBlockEntityRenderState state, PoseStack matrices, SubmitNodeCollector submitNodeCollector, CameraRenderState cameraRenderState) {
-        //ItemStack stack = entity.getRenderStack();
+    public void submit(AlchemyBlockEntityRenderState state, PoseStack matrices, SubmitNodeCollector queue, CameraRenderState cameraState) {
         Direction direction = state.blockState.getValue(BlockStateProperties.HORIZONTAL_FACING);
         matrices.pushPose();
         switch (direction) {
@@ -47,15 +43,15 @@ public class AlchemyblockentityRenderer implements BlockEntityRenderer<Alchemybl
             case WEST -> matrices.mulPose(Axis.YP.rotationDegrees(90));
             case EAST -> matrices.mulPose(Axis.YP.rotationDegrees(270));
         }
-        state.item.submit(matrices, submitNodeCollector, state.lightCoords, OverlayTexture.NO_OVERLAY,0);
-/*        itemRenderer.renderStatic(stack, ItemDisplayContext.GUI, getLightLevel(entity.getLevel(),
-                entity.getBlockPos()), OverlayTexture.NO_OVERLAY, matrices, vertexConsumers, entity.getLevel(), 1);*/
+        state.item.submit(matrices, queue, state.lightCoords, OverlayTexture.NO_OVERLAY,0);
+/*        itemRenderer.renderItem(stack, ItemDisplayContext.GUI, getLightLevel(entity.getWorld(),
+                entity.getPos()), OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, entity.getWorld(), 1);*/
         matrices.popPose();
     }
     private int getLightLevel(Level world, BlockPos pos) {
         int bLight = world.getBrightness(LightLayer.BLOCK, pos);
         int sLight = world.getBrightness(LightLayer.SKY, pos);
-        return LightTexture.pack(bLight, Math.max(sLight, 15));
+        return LightCoordsUtil.pack(bLight, Math.max(sLight, 15));
     }
 
     @Override
@@ -63,13 +59,14 @@ public class AlchemyblockentityRenderer implements BlockEntityRenderer<Alchemybl
         return new AlchemyBlockEntityRenderState();
     }
 
-    @Override
-    public void extractRenderState(Alchemyblockentity entity, AlchemyBlockEntityRenderState state, float partialTick, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
-        BlockEntityRenderer.super.extractRenderState(entity, state, partialTick, cameraPos, crumblingOverlay);
+    public void extractRenderState(Alchemyblockentity entity, AlchemyBlockEntityRenderState state, float tickProgress, Vec3 cameraPos, @Nullable ModelFeatureRenderer.CrumblingOverlay crumblingOverlay) {
+        BlockEntityRenderer.super.extractRenderState(entity, state, tickProgress, cameraPos, crumblingOverlay);
         ItemModelResolver itemModelResolver = Minecraft.getInstance().getItemModelResolver();
-        itemModelResolver.updateForTopItem(state.item, entity.getRenderStack(), ItemDisplayContext.GUI, entity.level(), entity, 1);
+        itemModelResolver.updateForTopItem(state.item, entity.getRenderStack(), ItemDisplayContext.GUI, entity.getLevel(), entity, 1);
         state.blockPos = entity.getBlockPos();
         state.blockState = entity.getBlockState();
-        state.lightCoords = getLightLevel(entity.getLevel(), entity.getBlockPos());
+        state.lightCoords = getLightLevel(entity.level(), entity.getBlockPos());
     }
+
+
 }

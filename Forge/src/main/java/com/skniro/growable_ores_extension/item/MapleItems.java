@@ -10,7 +10,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.function.Supplier;
 
 public class MapleItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, GrowableOresExtension.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, GrowableOresExtension.MOD_ID);
 
     private static <T extends Item> RegistryObject<T> registerItem(String name, Supplier<T> item) {
         RegistryObject<T> toReturn = ITEMS.register(name, item);

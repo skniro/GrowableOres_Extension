@@ -12,11 +12,11 @@ import java.util.function.Supplier;
 
 public interface AlchemyRecipeType<T extends Recipe<?>> {
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS =
-            DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, GrowableOresExtension.MODID);
+            DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, GrowableOresExtension.MOD_ID);
     public static final DeferredRegister<RecipeType<?>> TYPES =
-            DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, GrowableOresExtension.MODID);
+            DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, GrowableOresExtension.MOD_ID);
 
-    public static final Supplier<RecipeSerializer<AlchemyCraftingRecipe>> Cane_Converter_SERIALIZER = SERIALIZERS.register( "cane_converter", AlchemyCraftingRecipe.Serializer::new);
+    public static final Supplier<RecipeSerializer<AlchemyCraftingRecipe>> Cane_Converter_SERIALIZER = SERIALIZERS.register( "cane_converter", ()-> AlchemyCraftingRecipe.SERIALIZER);
     public static final Supplier<RecipeType<AlchemyCraftingRecipe>> Cane_Converter_TYPE = TYPES.register( "cane_converter", () -> new RecipeType<AlchemyCraftingRecipe>() {
                 @Override
                 public String toString() {

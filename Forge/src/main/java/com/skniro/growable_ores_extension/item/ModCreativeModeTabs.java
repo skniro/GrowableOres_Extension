@@ -8,7 +8,7 @@ import net.minecraftforge.registries.DeferredRegister;
 
 public class ModCreativeModeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
-            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, GrowableOresExtension.MODID);
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, GrowableOresExtension.MOD_ID);
 
 
 

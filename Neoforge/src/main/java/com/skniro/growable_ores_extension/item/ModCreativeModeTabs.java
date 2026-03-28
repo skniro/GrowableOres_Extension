@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 
 public class ModCreativeModeTabs {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
-            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, GrowableOresExtension.MODID);
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, GrowableOresExtension.MOD_ID);
 
     public static final Supplier<CreativeModeTab> Growable_Ores_Group = CREATIVE_MODE_TABS.register("test_group",
             () -> CreativeModeTab.builder().icon(() -> new ItemStack(GrowableOresBlocks.GrowableOres_Block.get()))

@@ -11,11 +11,11 @@ import net.minecraftforge.registries.RegistryObject;
 
 public interface AlchemyRecipeType<T extends Recipe<?>> {
     public static final DeferredRegister<RecipeSerializer<?>> SERIALIZERS =
-            DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, GrowableOresExtension.MODID);
+            DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, GrowableOresExtension.MOD_ID);
     public static final DeferredRegister<RecipeType<?>> TYPES =
-            DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, GrowableOresExtension.MODID);
+            DeferredRegister.create(ForgeRegistries.RECIPE_TYPES, GrowableOresExtension.MOD_ID);
 
-    public static final RegistryObject<RecipeSerializer<AlchemyCraftingRecipe>> Cane_Converter_SERIALIZER = SERIALIZERS.register( "cane_converter", AlchemyCraftingRecipe.Serializer::new);
+    public static final RegistryObject<RecipeSerializer<AlchemyCraftingRecipe>> Cane_Converter_SERIALIZER = SERIALIZERS.register( "cane_converter", ()-> AlchemyCraftingRecipe.SERIALIZER);
     public static final RegistryObject<RecipeType<AlchemyCraftingRecipe>> Cane_Converter_TYPE = TYPES.register( "cane_converter", () -> new RecipeType<AlchemyCraftingRecipe>() {
                 @Override
                 public String toString() {

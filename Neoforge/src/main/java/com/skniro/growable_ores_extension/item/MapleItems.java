@@ -9,7 +9,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import java.util.function.Supplier;
 
 public class MapleItems {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, GrowableOresExtension.MODID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(BuiltInRegistries.ITEM, GrowableOresExtension.MOD_ID);
 
     private static <T extends Item> Supplier<T> registerItem(String name, Supplier<T> item) {
         Supplier<T> toReturn = ITEMS.register(name, item);

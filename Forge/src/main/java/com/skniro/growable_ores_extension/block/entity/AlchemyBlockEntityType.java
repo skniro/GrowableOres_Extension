@@ -14,7 +14,7 @@ import java.util.Set;
 public class AlchemyBlockEntityType {
 
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
-            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, GrowableOresExtension.MODID);
+            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, GrowableOresExtension.MOD_ID);
 
 
     public static final RegistryObject<BlockEntityType<Alchemyblockentity>> ALCHEMY_BLOCK_ENTITY =

@@ -1,18 +1,18 @@
 package com.skniro.growable_ores_extension.recipe;
 
 import com.skniro.growable_ores_extension.GrowableOresExtension;
-import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeSerializer;
-import net.minecraft.recipe.RecipeType;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.util.Identifier;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 
 public interface AlchemyRecipeType<T extends Recipe<?>> {
     public static final RecipeSerializer<AlchemyCraftingRecipe> Cane_Converter_SERIALIZER = Registry.register(
-            Registries.RECIPE_SERIALIZER, Identifier.of(GrowableOresExtension.MOD_ID, "cane_converter"), new AlchemyCraftingRecipe.Serializer());
+            BuiltInRegistries.RECIPE_SERIALIZER, Identifier.fromNamespaceAndPath(GrowableOresExtension.MOD_ID, "cane_converter"), AlchemyCraftingRecipe.SERIALIZER);
     public static final RecipeType<AlchemyCraftingRecipe> Cane_Converter_TYPE = Registry.register(
-            Registries.RECIPE_TYPE, Identifier.of(GrowableOresExtension.MOD_ID, "cane_converter"), new RecipeType<>() {
+            BuiltInRegistries.RECIPE_TYPE, Identifier.fromNamespaceAndPath(GrowableOresExtension.MOD_ID, "cane_converter"), new RecipeType<>() {
                 @Override
                 public String toString() {
                     return "cane_converter";

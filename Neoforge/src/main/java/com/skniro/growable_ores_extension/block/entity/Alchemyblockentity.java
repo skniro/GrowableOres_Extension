@@ -141,8 +141,8 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
     private void craftItem() {
         Optional<RecipeHolder<AlchemyCraftingRecipe>> recipe = getCurrentRecipe();
         this.removeItem(INPUT_SLOT, 1);
-        this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().value().output().getItem(),
-                this.getItem(OUTPUT_SLOT).getCount() + recipe.get().value().output().getCount()));
+        this.setItem(OUTPUT_SLOT, new ItemStack(recipe.get().value().output().item(),
+                this.getItem(OUTPUT_SLOT).getCount() + recipe.get().value().output().count()));
     }
 
     @Override
@@ -178,7 +178,7 @@ public class Alchemyblockentity extends BlockEntity implements MenuProvider, Imp
             return false;
         }
 
-        ItemStack output = recipe.get().value().output();
+        ItemStack output = recipe.get().value().output().create();
         return canInsertAmountIntoOutputSlot(output.getCount()) && canInsertItemIntoOutputSlot(output);
     }
 

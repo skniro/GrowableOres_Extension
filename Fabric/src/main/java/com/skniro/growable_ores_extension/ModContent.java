@@ -6,8 +6,8 @@ import com.skniro.growable_ores_extension.block.entity.AlchemyBlockEntityType;
 import com.skniro.growable_ores_extension.item.GrowableOresItems;
 import com.skniro.growable_ores_extension.recipe.AlchemyRecipeType;
 import com.skniro.growable_ores_extension.screen.AlchemyScreenHandlerType;
-import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
-import net.minecraft.item.ItemGroups;
+import net.fabricmc.fabric.api.creativetab.v1.CreativeModeTabEvents;
+import net.minecraft.world.item.CreativeModeTabs;
 
 
 public class ModContent {
@@ -23,8 +23,8 @@ public class ModContent {
         AlchemyScreenHandlerType.registeralchemyscreenhandlertype();
     }
     public static void CreativeTab() {
-        ItemGroupEvents.modifyEntriesEvent(ItemGroups.FUNCTIONAL).register(content -> {
-            content.add(GrowableOresBlocks.GrowableOres_Block);
+        CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS).register(content -> {
+            content.accept(GrowableOresBlocks.GrowableOres_Block);
 
         });
     }

@@ -1,10 +1,11 @@
 package com.skniro.growable_ores_extension.block.renderer.state;
 
-import net.minecraft.client.render.block.entity.state.BlockEntityRenderState;
-import net.minecraft.client.render.entity.state.ItemStackEntityRenderState;
-import net.minecraft.client.render.item.ItemRenderState;
+import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.world.level.block.state.BlockState;
 
 
 public class AlchemyBlockEntityRenderState extends BlockEntityRenderState {
-    public final ItemRenderState item = new ItemRenderState();
+    public final ItemStackRenderState item = new ItemStackRenderState();
+    public BlockState blockState;
 }
