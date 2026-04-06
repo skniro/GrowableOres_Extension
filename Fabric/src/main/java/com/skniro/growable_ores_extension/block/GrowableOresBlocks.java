@@ -18,7 +18,12 @@ import java.util.function.Function;
 public class GrowableOresBlocks {
     public static final Block GrowableOres_Block =registerBlock("growableores_block", Alchemyblock::new, (AbstractBlock.Settings.create().requiresTool().strength(3.0F, 3.0F)), GrowableOresItemGroups.Growable_Ores_Group);
 
-    private static Block registerBlockWithoutItem(String name, Block block) {
+    public static final Block GrowableBox_Block =registerBlock("growablebox_block", ShulkerBoxBlock::new, (AbstractBlock.Settings.create().requiresTool().strength(3.0F, 3.0F)), GrowableOresItemGroups.Growable_Ores_Group);
+
+
+    private static Block
+
+    registerBlockWithoutItem(String name, Block block) {
         return Registry.register(Registries.BLOCK, Identifier.of(GrowableOresExtension.MOD_ID, name), block);
     }
     private static Block registerBlock(String name, Function<AbstractBlock.Settings, Block> factory, AbstractBlock.Settings settings, RegistryKey<ItemGroup> tab) {
