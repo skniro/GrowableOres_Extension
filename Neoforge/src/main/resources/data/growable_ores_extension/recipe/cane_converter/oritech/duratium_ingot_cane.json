@@ -21,7 +21,7 @@
     ],
     "type": "growable_ores_extension:cane_converter",
     "ingredient": {
-        "item": "growable_ores:duratium_ingot_cane"
+        "item": "growable_ores:ot_duratium_ingot_cane"
     },
     "result": {
         "id": "oritech:duratium_ingot",

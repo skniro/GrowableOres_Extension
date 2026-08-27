@@ -3,28 +3,28 @@
         {
             "condition": "fabric:all_mods_loaded",
             "values": [
-                "oritech"
+                "aether"
             ]
         }
     ],
     "forge:conditions": [
         {
             "type": "forge:mod_loaded",
-            "modid": "oritech"
+            "modid": "aether"
         }
     ],
     "neoforge:conditions": [
         {
             "type": "neoforge:mod_loaded",
-            "modid": "oritech"
+            "modid": "aether"
         }
     ],
     "type": "growable_ores_extension:cane_converter",
     "ingredient": {
-        "item": "growable_ores:ot_duratium_ingot_cane"
+        "item": "growable_ores:aet_zanite_gemstone_cane"
     },
     "result": {
-        "id": "oritech:duratium_ingot",
+        "id": "aether:zanite_gemstone",
         "count": 1
     }
 }
