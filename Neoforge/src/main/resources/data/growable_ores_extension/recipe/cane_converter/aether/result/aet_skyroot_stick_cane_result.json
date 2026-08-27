@@ -3,26 +3,26 @@
         {
             "condition": "fabric:all_mods_loaded",
             "values": [
-                "oritech"
+                "aether"
             ]
         }
     ],
     "forge:conditions": [
         {
             "type": "forge:mod_loaded",
-            "modid": "oritech"
+            "modid": "aether"
         }
     ],
     "neoforge:conditions": [
         {
             "type": "neoforge:mod_loaded",
-            "modid": "oritech"
+            "modid": "aether"
         }
     ],
     "type": "growable_ores_extension:cane_converter",
-    "ingredient": "growable_ores:ot_duratium_ingot_cane",
+    "ingredient": "growable_ores:aet_skyroot_stick_cane",
     "result": {
-        "id": "oritech:duratium_ingot",
+        "id": "aether:skyroot_stick",
         "count": 1
     }
 }
